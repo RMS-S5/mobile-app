@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './food_item.dart';
+import 'food_item.dart';
 
 class FoodItemsGrid extends StatelessWidget {
   final foodItems;
@@ -14,7 +14,7 @@ class FoodItemsGrid extends StatelessWidget {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 3 / 2,
-        crossAxisSpacing: 10,
+        crossAxisSpacing: 0,
         mainAxisSpacing: 10,
       ),
       delegate: SliverChildBuilderDelegate(

@@ -24,7 +24,7 @@ class CategoryItem extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(
-              categoryName,
+              categoryName != null ? categoryName : "error",
               style: (activeCategoryId == categoryId)
                   ? TextStyle(
                       color: kTextColor,

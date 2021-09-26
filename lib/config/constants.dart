@@ -3,26 +3,26 @@ import 'package:flutter/material.dart';
 // Brakpoints
 
 // Global constraints
-final String fontFamily = 'Roboto';
+final String fontFamily = 'Open Sans';
 
 // colour constants
 final Color kPrimaryColor = Color(0xFFFFC61F);
+// final Color kPrimaryColor = Color(0xFFFFC800);
 final Color kSecondaryColor = Color(0xFFB5BFD0);
 const Color kTextColor = Color(0xFF50505D);
 const Color kTextLightColor = Color(0xFF6A727D);
 
-final Color kSuccessButtonColor = Color(0x51E85C);
-final Color kRejectButtonColor = Color(0xe76f51);
+final Color kSuccessButtonColor = Color(0xFF51E85C);
+final Color kRejectButtonColor = Color(0xFFe76f51);
 final Color kColor1 = Color(0xf4a261);
 final Color kDrawerBackgroudColor = Color(0xff111216);
-// final Color drawerBackgroudColor = Color(0xffb74093);
-// final Color drawerUnselectedIconColor = Color(0xff6B5B2B);
 final Color kDrawerUnselectedIconColor = kTextColor;
 final Color kDrawerSelectedIconColor = Color(0xffDCA721);
 
-// Text styles
+//Text Styles
+
 final TextStyle heading1Style =
-    TextStyle(color: Colors.white, fontSize: 20, fontFamily: fontFamily);
+    TextStyle(color: kTextColor, fontSize: 20, fontFamily: fontFamily);
 
 final TextStyle heading1Style2 = TextStyle(
   color: Colors.white,
@@ -44,10 +44,37 @@ TextStyle drawerItemStyleM(
         fontFamily: fontFamily);
 
 final TextStyle inputTextStyle =
-    TextStyle(color: Colors.white, fontSize: 16, fontFamily: fontFamily);
+    TextStyle(color: kTextColor, fontSize: 16, fontFamily: fontFamily);
 
-final TextStyle largePriceStyle1 = TextStyle(
-    color: kDrawerBackgroudColor, fontSize: 25, fontFamily: fontFamily);
+final TextStyle textButtonStyle1 =
+    TextStyle(fontFamily: fontFamily, fontSize: 17);
 
-final TextStyle descriptionStyle1 = TextStyle(
-    color: kDrawerBackgroudColor, fontSize: 16, fontFamily: fontFamily);
+final TextStyle titleTextStyle1 =
+    TextStyle(color: kTextColor, fontSize: 17, fontFamily: fontFamily);
+
+final TextStyle largePriceStyle1 =
+    TextStyle(color: kTextColor, fontSize: 18, fontFamily: fontFamily);
+
+final TextStyle descriptionStyle1 =
+    TextStyle(color: kTextLightColor, fontSize: 15, fontFamily: fontFamily);
+
+// Image URLS
+final pendingOrderImageUrl = "assets/images/food-item-fade.jpg";
+
+final avatarImagePath = "assets/images/avatar.png";
+final authScreenBackgroundImagePath = "assets/images/auth-bg1.svg";
+final welcomeBackGroudImagePath = "assets/images/welcome-3.png";
+final foodItemFadeImageUrl = "assets/images/food-item-fade.jpg";
+final imageNotFoundImageUrl =
+    "https://bitsofco.de/content/images/2018/12/Screenshot-2018-12-16-at-21.06.29.png";
+
+// OrderTypes
+const kOrderStatusTypes = {
+  "Placed": "Placed",
+  "Preparing": "Preparing",
+  "Prepared": "Prepared",
+  "Waiter Assigned": "Waiter Assigned",
+  "Rejected": "Rejected",
+  "Served": "Served",
+  "Closed": "Closed"
+};
