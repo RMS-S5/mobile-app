@@ -37,7 +37,6 @@ class User with ChangeNotifier {
   // Functions
 
   bool isAuth() {
-    print(_expiryDate);
     if (_expiryDate != null &&
         _expiryDate!.isAfter(DateTime.now()) &&
         _token != null) {
@@ -103,7 +102,6 @@ class User with ChangeNotifier {
 
 // TODO: Update user
   Future<void> updateUser(Map<String, dynamic> updatedUserData) async {
-    print(updatedUserData);
     try {
       final customerData = {
         "firstName": updatedUserData['firstName'],

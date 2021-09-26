@@ -61,7 +61,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
       showErrorDialog(error.toString(), context);
     } catch (error) {
-      print(error);
       setState(() {
         _isLoading = false;
       });

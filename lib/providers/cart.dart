@@ -19,7 +19,6 @@ class Cart with ChangeNotifier {
 
   // Getters
   List get cartItems {
-    print(_token);
     return [..._cartItems];
   }
 
@@ -108,16 +107,12 @@ class Cart with ChangeNotifier {
         notifyListeners();
       }
     } catch (error) {
-      print(error);
       throw error;
     }
   }
 
   Future<void> removeItem(String cartItemId) async {
     try {
-      if (_token == null || _token == "") {
-        throw HttpException('Token error');
-      }
       final response =
           await API.cartAPI.removeCartItems(cartItemId, token: _token);
       _cartItems

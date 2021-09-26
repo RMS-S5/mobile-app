@@ -101,14 +101,9 @@ class _KitchenStaffAppDrawerState extends State<KitchenStaffAppDrawer> {
               leadingIcon: Icons.exit_to_app,
               ontapFunction: () async {
                 setSelectedScreen(DrawerItems.LOGOUT);
-                try {
-                  await Provider.of<User>(context, listen: false).logout();
-                } catch (error) {
-                  showErrorDialog(
-                      "Something went wrong at logging out.", context);
-                }
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacementNamed('/');
+                Provider.of<User>(context, listen: false).logout();
               },
             ),
             Divider(),

@@ -26,12 +26,10 @@ class CartItem extends StatelessWidget {
 
   Future<void> removeCartItem(String cartItemId, BuildContext context) async {
     try {
-      print(cartItemId);
       await Provider.of<Cart>(context, listen: false).removeItem(cartItemId);
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
-      print(error);
       showErrorDialog('Something went wrong.', context);
     }
   }
@@ -72,6 +70,7 @@ class CartItem extends StatelessWidget {
               TextButton(
                 child: Text('Yes'),
                 onPressed: () async {
+                  Navigator.of(ctx).pop(true);
                   try {
                     await removeCartItem(cartItemId, context);
                     Navigator.of(ctx).pop(true);

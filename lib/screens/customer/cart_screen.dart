@@ -47,7 +47,6 @@ class _CustomerCartScreenState extends State<CustomerCartScreen> {
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
-      print(error);
       showErrorDialog('Something went wrong.', context);
     }
   }

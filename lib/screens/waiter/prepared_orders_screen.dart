@@ -6,19 +6,19 @@ import './prepared_order_view_screen.dart';
 import '../../providers/orders.dart';
 import '../../widgets/staff_app_bar.dart';
 import '../../widgets/order_list.dart';
-import '../../widgets/drawers/kitchen_staff_drawer.dart';
+import '../../widgets/drawers/waiter_app_drawer.dart';
 
 import '../../config/constants.dart';
 import '../../widgets/no_data_found.dart';
 import '../../widgets/simple_error_dialog.dart';
 import '../../models/http_exception.dart';
 
-class KitchenStaffPreparedOrdersScreen extends StatelessWidget {
-  static final routeName = "kitchen-staff/prepared-orders";
+class WaiterPreparedOrdersScreen extends StatelessWidget {
+  static final routeName = "waiter/prepared-orders";
   final preparedOrderViewScreenRouteName =
-      KitchenStaffPreparedOrderViewScreen.routeName;
+      WaiterPreparedOrderViewScreen.routeName;
 
-  KitchenStaffPreparedOrdersScreen({Key? key}) : super(key: key);
+  WaiterPreparedOrdersScreen({Key? key}) : super(key: key);
 
   Future<void> _refreshItems(BuildContext context) async {
     try {
@@ -36,7 +36,7 @@ class KitchenStaffPreparedOrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: staffAppBar(context, title: 'Prepared Orders'),
-      drawer: KitchenStaffAppDrawer(drawerItemName: DrawerItems.PREPAREDORDERS),
+      drawer: WaiterAppDrawer(drawerItemName: DrawerItems.PREPAREDORDERS),
       body: FutureBuilder(
         future: _refreshItems(context),
         builder: (ctx, snapshot) =>

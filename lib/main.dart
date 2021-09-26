@@ -38,6 +38,10 @@ import './screens/kitchen/prepared_orders_screen.dart';
 import './screens/kitchen/prepared_order_view_screen.dart';
 import './screens/welcome-screen.dart';
 
+// Waiter Screens
+import './screens/waiter/prepared_orders_screen.dart';
+import './screens/waiter/prepared_order_view_screen.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -124,6 +128,10 @@ class MyApp extends StatelessWidget {
                 KitchenStaffPreparedOrdersScreen(),
             KitchenStaffPreparedOrderViewScreen.routeName: (ctx) =>
                 KitchenStaffPreparedOrderViewScreen(),
+            WaiterPreparedOrdersScreen.routeName: (ctx) =>
+                WaiterPreparedOrdersScreen(),
+            WaiterPreparedOrderViewScreen.routeName: (ctx) =>
+                WaiterPreparedOrderViewScreen(),
           },
         ),
       ),
@@ -141,6 +149,9 @@ Widget userHomeScreen(bool loggedIn, String? accountType) {
       break;
     case 'Kitchen Staff':
       return KitchenStaffPendingOrdersScreen();
+      break;
+    case 'Waiter':
+      return WaiterPreparedOrdersScreen();
       break;
     default:
       return WelcomeScreen();

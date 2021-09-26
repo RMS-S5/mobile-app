@@ -77,7 +77,6 @@ class _AuthCardState extends State<AuthCard> {
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
-      print(error);
       final errorMessage =
           'Could not authenticate you. Please try again later.';
       showErrorDialog(errorMessage, context);

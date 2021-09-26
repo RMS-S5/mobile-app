@@ -50,7 +50,6 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
   void searchBarOnChange(value) {
     setState(() {
       searchKey = value;
-      print(searchKey);
     });
   }
 

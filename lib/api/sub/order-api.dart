@@ -47,8 +47,6 @@ class OrderAPI {
     String? token,
   }) async {
     try {
-      print('qu');
-      print(query);
       var response =
           await _conn.get("/api/order/table-order", query: query, token: token);
       return response;

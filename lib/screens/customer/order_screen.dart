@@ -39,7 +39,6 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
         showErrorDialog(error.toString(), context,
             onPressed: () => Navigator.of(context)
                 .pushReplacementNamed(CustomerHomePageScreen.routeName));
-        print(error);
       });
     }
     _isInit = false;
@@ -49,7 +48,6 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
   @override
   Widget build(BuildContext context) {
     final orderData = Provider.of<Orders>(context).tableOrder;
-    print(orderData);
     return Scaffold(
       appBar: customerAppBar(context),
       drawer: CustomerAppDrawer(

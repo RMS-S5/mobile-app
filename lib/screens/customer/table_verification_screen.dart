@@ -82,7 +82,6 @@ class _TableVerificationScreenState extends State<TableVerificationScreen> {
       });
       showErrorDialog(error.toString(), context);
     } catch (error) {
-      print(error);
       setState(() {
         _isLoading = false;
       });
@@ -168,8 +167,6 @@ class _TableVerificationScreenState extends State<TableVerificationScreen> {
                       ]),
                       Consumer<Orders>(builder: (context, orderData, _) {
                         final tableData = orderData.tableData;
-                        print(tableData);
-                        print(!tableData.isEmpty);
                         bool showField = !tableData.isEmpty;
                         return Column(
                           children: [

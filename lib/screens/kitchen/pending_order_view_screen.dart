@@ -8,6 +8,7 @@ import '../../widgets/order_food_item.dart';
 import '../../widgets/order_view_items_list.dart';
 
 import '../../widgets/simple_error_dialog.dart';
+import '../../widgets/confirm_dialog.dart';
 import '../../widgets/no_data_found.dart';
 import '../../../config/constants.dart';
 import '../../models/http_exception.dart';
@@ -17,6 +18,9 @@ class KitchenStaffPendingOrderViewScreen extends StatelessWidget {
 
   prepareOrder(orderId, context) async {
     try {
+      if (!await confirmDialog(context)) {
+        return;
+      }
       await Provider.of<Orders>(context, listen: false)
           .updateOrderStatus(orderId, kOrderStatusTypes['Preparing']);
     } on HttpException catch (error) {
@@ -29,6 +33,9 @@ class KitchenStaffPendingOrderViewScreen extends StatelessWidget {
 
   rejectOrder(orderId, context) async {
     try {
+      if (!await confirmDialog(context)) {
+        return;
+      }
       await Provider.of<Orders>(context, listen: false)
           .updateOrderStatus(orderId, kOrderStatusTypes['Rejected']);
     } on HttpException catch (error) {
@@ -44,7 +51,9 @@ class KitchenStaffPendingOrderViewScreen extends StatelessWidget {
     final orderId = ModalRoute.of(context)?.settings.arguments as String;
     final orderData = Provider.of<Orders>(context).getOrdersByOrderId(orderId);
     return Scaffold(
-      appBar: staffAppBar(context),
+      appBar: staffAppBar(
+        context,
+      ),
       body: Column(
         children: <Widget>[
           Card(

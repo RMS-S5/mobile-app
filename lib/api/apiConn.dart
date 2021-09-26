@@ -89,7 +89,6 @@ class APIConn {
       Response response = await _dio.post(url.toString(),
           data: body, options: Options(headers: generateHeaders()));
       final json = response.data;
-      print(response.statusCode);
       if (response.statusCode != 200) {
         throw HttpException(json['message']);
       }

@@ -4,6 +4,7 @@ import './order_list_item.dart';
 
 ListView orderList(List<dynamic> pendingOrders, String orderViewRouteName) {
   return ListView.builder(
+    physics: AlwaysScrollableScrollPhysics(),
     itemCount: pendingOrders.length,
     itemBuilder: (ctx, i) => Container(
       margin: EdgeInsets.symmetric(vertical: 5),

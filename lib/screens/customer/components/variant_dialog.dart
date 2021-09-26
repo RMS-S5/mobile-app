@@ -63,7 +63,6 @@ class VariantDialog extends StatelessWidget {
             } on HttpException catch (error) {
               showErrorDialog(error.toString(), context);
             } catch (error) {
-              print(error);
               const message = "Something went wrong.";
               showErrorDialog(message, context);
             }

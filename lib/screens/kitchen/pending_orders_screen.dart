@@ -35,7 +35,7 @@ class KitchenStaffPendingOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: staffAppBar(context),
+      appBar: staffAppBar(context, title: 'Pending Orders'),
       drawer: KitchenStaffAppDrawer(drawerItemName: DrawerItems.PENDINGORDERS),
       body: FutureBuilder(
         future: _refreshItems(context),

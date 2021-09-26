@@ -36,7 +36,7 @@ class KitchenStaffPreparingOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: staffAppBar(context),
+      appBar: staffAppBar(context, title: 'Preparing Orders'),
       drawer:
           KitchenStaffAppDrawer(drawerItemName: DrawerItems.PREPARINGORDERS),
       body: FutureBuilder(
@@ -57,7 +57,8 @@ class KitchenStaffPreparingOrdersScreen extends StatelessWidget {
                             : orderList(
                                 orderData, preparingOrderViewScreenRouteName);
                       },
-                    )),
+                    ),
+                  ),
       ),
     );
   }

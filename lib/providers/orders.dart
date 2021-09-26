@@ -56,7 +56,6 @@ class Orders with ChangeNotifier {
 
   // Get Order by Order Id
   Map getOrdersByOrderId(orderId) {
-    print(orderId);
     return _activeOrders.firstWhere((order) => order["orderId"] == orderId);
   }
 
@@ -72,12 +71,10 @@ class Orders with ChangeNotifier {
         'tableNumber': _tableData['tableNumber'],
         'branchId': _tableData['branchId'],
       };
-      print(data);
       final reponse = await API.orderAPI.addOrder(data);
 
       notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
   }
@@ -135,21 +132,21 @@ class Orders with ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('tableData', tableData);
     } catch (error) {
-      print('TABle data error');
       throw HttpException(error.toString());
     }
   }
 
   Future<void> fetchAndSetActiveOrders() async {
     try {
+      if (_token == null || _token == "") {
+        throw HttpException('Token error');
+      }
       final response = await API.orderAPI.getActiveOrders(
         token: _token,
       );
       _activeOrders = response?['data'] ?? {};
-      print(_activeOrders);
       notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
   }
@@ -158,8 +155,6 @@ class Orders with ChangeNotifier {
     try {
       if (_tableData.isEmpty) {
         await fetchAndSetTableData();
-        print("table data");
-        print(_tableData);
       }
 
       final response = await API.orderAPI.getTableOrder(_verificationCode,
@@ -168,12 +163,9 @@ class Orders with ChangeNotifier {
             'tableNumber': _tableData['tableNumber']
           },
           token: _token);
-      print('Reponse eroro');
       _tableOrder = response?['data'] ?? {};
-      print(_tableOrder);
       notifyListeners();
     } catch (error) {
-      print("fetching error");
       throw error;
     }
   }

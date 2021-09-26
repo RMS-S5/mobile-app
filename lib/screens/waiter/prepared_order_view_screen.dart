@@ -13,16 +13,16 @@ import '../../widgets/no_data_found.dart';
 import '../../../config/constants.dart';
 import '../../models/http_exception.dart';
 
-class KitchenStaffPreparingOrderViewScreen extends StatelessWidget {
-  static const routeName = '/kitchen-staff/preparing-order-view';
+class WaiterPreparedOrderViewScreen extends StatelessWidget {
+  static const routeName = '/waiter/prepared-order-view';
 
-  preparedOrder(orderId, context) async {
+  serveOrder(orderId, context) async {
     try {
       if (!await confirmDialog(context)) {
         return;
       }
       await Provider.of<Orders>(context, listen: false)
-          .updateOrderStatus(orderId, kOrderStatusTypes['Prepared']);
+          .updateOrderStatus(orderId, kOrderStatusTypes['Waiter Assigned']);
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
@@ -37,7 +37,7 @@ class KitchenStaffPreparingOrderViewScreen extends StatelessWidget {
     final orderData = Provider.of<Orders>(context).getOrdersByOrderId(orderId);
 
     return Scaffold(
-      appBar: staffAppBar(context),
+      appBar: staffAppBar(context, title: 'Prepared Orders'),
       body: Column(
         children: <Widget>[
           Card(
@@ -75,12 +75,12 @@ class KitchenStaffPreparingOrderViewScreen extends StatelessWidget {
                         Spacer(),
                         TextButton(
                           child: Text(
-                            'Prepared',
+                            'Serve',
                             style:
                                 textButtonStyle1.copyWith(color: kPrimaryColor),
                           ),
                           onPressed: () {
-                            preparedOrder(orderId, context);
+                            serveOrder(orderId, context);
                           },
                         ),
                       ],
