@@ -46,6 +46,9 @@ TextStyle drawerItemStyleM(
 final TextStyle inputTextStyle =
     TextStyle(color: kTextColor, fontSize: 16, fontFamily: fontFamily);
 
+final TextStyle inputTextStyle1 =
+    TextStyle(color: Colors.white, fontSize: 16, fontFamily: fontFamily);
+
 final TextStyle textButtonStyle1 =
     TextStyle(fontFamily: fontFamily, fontSize: 17);
 

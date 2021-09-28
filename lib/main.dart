@@ -28,6 +28,7 @@ import 'screens/customer/food_item_screen.dart';
 import 'screens/customer/cart_screen.dart';
 import 'screens/customer/order_screen.dart';
 import 'screens/customer/table_verification_screen.dart';
+import 'screens/customer/qr_scanner.dart';
 
 // Kitchen Staff Screens
 import './screens/kitchen/pending_orders_screen.dart';
@@ -134,6 +135,7 @@ class MyApp extends StatelessWidget {
             WaiterPreparedOrderViewScreen.routeName: (ctx) =>
                 WaiterPreparedOrderViewScreen(),
             VerifyTableScreen.routeName: (ctx) => VerifyTableScreen(),
+            QRScanner.routeName: (ctx) => QRScanner(),
           },
         ),
       ),

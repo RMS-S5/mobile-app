@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:rms_mobile_app/screens/customer/qr_scanner.dart';
 
 import '../../widgets/drawers/customer_app_drawer.dart';
+import './cart_screen.dart';
 import '../../models/http_exception.dart';
 import '../../widgets/simple_error_dialog.dart';
 import 'components/app_bar.dart';
@@ -25,36 +27,6 @@ class _TableVerificationScreenState extends State<TableVerificationScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey();
   var _verifyData = "";
-
-  Barcode? result;
-  QRViewController? controller;
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
-  @override
-  void reassemble() {
-    super.reassemble();
-    controller!.pauseCamera();
-    // if (Platform.isAndroid) {
-    //   controller!.pauseCamera();
-    // } else if (Platform.isIOS) {
-    //   controller!.resumeCamera();
-    // }
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
 
   @override
   void didChangeDependencies() {
@@ -232,22 +204,24 @@ class _TableVerificationScreenState extends State<TableVerificationScreen> {
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 5,
-                  child: QRView(
-                    key: qrKey,
-                    onQRViewCreated: _onQRViewCreated,
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: (result != null)
-                        ? Text('errir')
-                        // 'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}')
-                        : Text('Scan a code'),
-                  ),
-                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kSuccessButtonColor,
+                      onPrimary: kTextColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: Text(
+                      'Show QR Scanner',
+                      style: titleTextStyle1.copyWith(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        Navigator.of(context).pushNamed(QRScanner.routeName);
+                      });
+                    }),
               ],
             ),
     );
