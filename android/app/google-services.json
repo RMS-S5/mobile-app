@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "237246652557",
+    "project_id": "npn-food",
+    "storage_bucket": "npn-food.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237246652557:android:1195f04f686c50a71c42c4",
+        "android_client_info": {
+          "package_name": "com.example.rms_mobile_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237246652557-itaa25ob9vnmr4vnh5v4s1qjutt39a88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgGbKNOLHwiDfKiJwsoFvg8NffnkNy2MA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237246652557-itaa25ob9vnmr4vnh5v4s1qjutt39a88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

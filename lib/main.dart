@@ -41,6 +41,7 @@ import './screens/welcome-screen.dart';
 // Waiter Screens
 import './screens/waiter/prepared_orders_screen.dart';
 import './screens/waiter/prepared_order_view_screen.dart';
+import './screens/waiter/verify_table_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -132,6 +133,7 @@ class MyApp extends StatelessWidget {
                 WaiterPreparedOrdersScreen(),
             WaiterPreparedOrderViewScreen.routeName: (ctx) =>
                 WaiterPreparedOrderViewScreen(),
+            VerifyTableScreen.routeName: (ctx) => VerifyTableScreen(),
           },
         ),
       ),

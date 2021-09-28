@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../widgets/drawers/customer_app_drawer.dart';
 import '../../models/http_exception.dart';
@@ -21,8 +22,39 @@ class TableVerificationScreen extends StatefulWidget {
 class _TableVerificationScreenState extends State<TableVerificationScreen> {
   var _isInit = true;
   var _isLoading = false;
+
   final GlobalKey<FormState> _formKey = GlobalKey();
   var _verifyData = "";
+
+  Barcode? result;
+  QRViewController? controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    controller!.pauseCamera();
+    // if (Platform.isAndroid) {
+    //   controller!.pauseCamera();
+    // } else if (Platform.isIOS) {
+    //   controller!.resumeCamera();
+    // }
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        result = scanData;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -103,100 +135,120 @@ class _TableVerificationScreenState extends State<TableVerificationScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-              child: Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        style: inputTextStyle,
-                        // enabled: tableData.isEmpty,
-                        decoration: InputDecoration(
-                          labelText: 'Verification Code',
-                          icon: Icon(Icons.verified_user_outlined),
-                        ),
-                        onSaved: (value) {
-                          _verifyData = value ?? "";
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(children: [
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: kRejectButtonColor,
-                              onPrimary: kTextColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
+          : Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            style: inputTextStyle,
+                            // enabled: tableData.isEmpty,
+                            decoration: InputDecoration(
+                              labelText: 'Verification Code',
+                              icon: Icon(Icons.verified_user_outlined),
                             ),
-                            child: Text(
-                              'Clear',
-                              style: titleTextStyle1.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            onPressed: () async {
-                              try {
-                                await Provider.of<Orders>(context,
-                                        listen: false)
-                                    .clearTableData();
-                              } catch (error) {
-                                showErrorDialog(error.toString(), context);
-                              }
-                            }),
-                        Spacer(),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
-                              onPrimary: kTextColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            child: Text(
-                              'Submit',
-                              style: titleTextStyle1.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            onPressed: _submit),
-                      ]),
-                      Consumer<Orders>(builder: (context, orderData, _) {
-                        final tableData = orderData.tableData;
-                        bool showField = !tableData.isEmpty;
-                        return Column(
-                          children: [
-                            if (showField)
-                              ListTile(
-                                leading:
-                                    Icon(Icons.auto_awesome_mosaic_rounded),
-                                title:
-                                    Text('Table Number', style: inputTextStyle),
-                                trailing: Text(
-                                    tableData['tableNumber'].toString(),
-                                    style: inputTextStyle),
-                              ),
-                            if (showField)
-                              ListTile(
-                                leading: Icon(Icons.balcony),
-                                title:
-                                    Text('Branch Name', style: inputTextStyle),
-                                trailing: Text(
-                                  tableData['branchName'],
-                                  style: inputTextStyle,
+                            onSaved: (value) {
+                              _verifyData = value ?? "";
+                            },
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(children: [
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: kRejectButtonColor,
+                                  onPrimary: kTextColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
                                 ),
-                              )
-                          ],
-                        );
-                      }),
-                    ],
+                                child: Text(
+                                  'Clear',
+                                  style: titleTextStyle1.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  try {
+                                    await Provider.of<Orders>(context,
+                                            listen: false)
+                                        .clearTableData();
+                                  } catch (error) {
+                                    showErrorDialog(error.toString(), context);
+                                  }
+                                }),
+                            Spacer(),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Theme.of(context).primaryColor,
+                                  onPrimary: kTextColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Submit',
+                                  style: titleTextStyle1.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                onPressed: _submit),
+                          ]),
+                          Consumer<Orders>(builder: (context, orderData, _) {
+                            final tableData = orderData.tableData;
+                            bool showField = !tableData.isEmpty;
+                            return Column(
+                              children: [
+                                if (showField)
+                                  ListTile(
+                                    leading:
+                                        Icon(Icons.auto_awesome_mosaic_rounded),
+                                    title: Text('Table Number',
+                                        style: inputTextStyle),
+                                    trailing: Text(
+                                        tableData['tableNumber'].toString(),
+                                        style: inputTextStyle),
+                                  ),
+                                if (showField)
+                                  ListTile(
+                                    leading: Icon(Icons.balcony),
+                                    title: Text('Branch Name',
+                                        style: inputTextStyle),
+                                    trailing: Text(
+                                      tableData['branchName'],
+                                      style: inputTextStyle,
+                                    ),
+                                  )
+                              ],
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Expanded(
+                  flex: 5,
+                  child: QRView(
+                    key: qrKey,
+                    onQRViewCreated: _onQRViewCreated,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: (result != null)
+                        ? Text('errir')
+                        // 'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}')
+                        : Text('Scan a code'),
+                  ),
+                ),
+              ],
             ),
     );
   }

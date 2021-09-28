@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rms_mobile_app/widgets/simple_error_dialog.dart';
 
+import '../simple_error_dialog.dart';
 import '../../providers/user.dart';
 import '../../config/constants.dart';
 import './drawer_item.dart';
@@ -9,8 +9,16 @@ import './drawer_header.dart';
 
 //Screens import
 import '../../screens/waiter/prepared_orders_screen.dart';
+import '../../screens/waiter/verify_table_screen.dart';
 
-enum DrawerItems { HOME, PREPAREDORDERS, SERVINGORDERS, SERVEDORDERS, LOGOUT }
+enum DrawerItems {
+  HOME,
+  PREPAREDORDERS,
+  SERVINGORDERS,
+  SERVEDORDERS,
+  LOGOUT,
+  VERIFYTABLE
+}
 
 class WaiterAppDrawer extends StatefulWidget {
   final DrawerItems drawerItemName;
@@ -46,7 +54,7 @@ class _WaiterAppDrawerState extends State<WaiterAppDrawer> {
             DrawerItem(
               selectedDrawerItem: selectedDrawerItem,
               drawerItemName: DrawerItems.PREPAREDORDERS,
-              label: "Pending Orders",
+              label: "Prepared Orders",
               leadingIcon: Icons.pending_actions,
               ontapFunction: () {
                 setSelectedScreen(DrawerItems.PREPAREDORDERS);
@@ -79,6 +87,18 @@ class _WaiterAppDrawerState extends State<WaiterAppDrawer> {
             //   },
             // ),
             // Divider(),
+            DrawerItem(
+              selectedDrawerItem: selectedDrawerItem,
+              drawerItemName: DrawerItems.VERIFYTABLE,
+              label: "Verify Table",
+              leadingIcon: Icons.verified_outlined,
+              ontapFunction: () {
+                setSelectedScreen(DrawerItems.VERIFYTABLE);
+                Navigator.of(context)
+                    .pushReplacementNamed(VerifyTableScreen.routeName);
+              },
+            ),
+            Divider(),
             SizedBox(
               height: 20,
             ),

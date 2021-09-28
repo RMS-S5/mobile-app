@@ -14,6 +14,7 @@ class Orders with ChangeNotifier {
   String _token;
   String _verificationCode = "";
   Map<String, dynamic> _tableData = {};
+  List<dynamic> _branchTables = [];
 
   Orders(this._token, this._activeOrders, this._tableOrder,
       this._waiterServedOrders) {}
@@ -45,6 +46,16 @@ class Orders with ChangeNotifier {
 
   int get activeOrderCount {
     return _activeOrders.length;
+  }
+
+  List get tableNumebrs {
+    return _branchTables.map((table) => table['tableNumber']).toList();
+  }
+
+  String getVerificationCodeByTableNumber(int tableNumber) {
+    final table = _branchTables
+        .firstWhere((table) => table['tableNumber'] == tableNumber);
+    return table['verificationCode'];
   }
 
   // Get orders accordint to order status
@@ -164,6 +175,21 @@ class Orders with ChangeNotifier {
           },
           token: _token);
       _tableOrder = response?['data'] ?? {};
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<void> fetchAndSetBranchTables() async {
+    try {
+      if (_token == null || _token == "") {
+        throw HttpException('Token error');
+      }
+      final response = await API.branchAPI.getBranchTables(
+        token: _token,
+      );
+      _branchTables = response?['data'] ?? [];
       notifyListeners();
     } catch (error) {
       throw error;
