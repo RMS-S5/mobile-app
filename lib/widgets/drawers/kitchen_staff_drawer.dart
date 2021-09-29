@@ -12,7 +12,7 @@ import '../../screens/kitchen/pending_orders_screen.dart';
 import '../../screens/kitchen/preparing_orders_screen.dart';
 import '../../screens/kitchen/prepared_orders_screen.dart';
 
-import '../../screens/customer/customer_home_screen.dart';
+import '../../screens/profile-screen.dart';
 
 enum DrawerItems {
   HOME,
@@ -20,7 +20,8 @@ enum DrawerItems {
   PREPARINGORDERS,
   PREPAREDORDERS,
   CUSTOMER,
-  LOGOUT
+  LOGOUT,
+  PROFILE
 }
 
 class KitchenStaffAppDrawer extends StatefulWidget {
@@ -87,6 +88,17 @@ class _KitchenStaffAppDrawerState extends State<KitchenStaffAppDrawer> {
                 setSelectedScreen(DrawerItems.PREPAREDORDERS);
                 Navigator.of(context).pushReplacementNamed(
                     KitchenStaffPreparedOrdersScreen.routeName);
+              },
+            ),
+            Divider(),
+            DrawerItem(
+              selectedDrawerItem: selectedDrawerItem,
+              drawerItemName: DrawerItems.PROFILE,
+              label: "Profile",
+              leadingIcon: Icons.account_circle_outlined,
+              ontapFunction: () {
+                setSelectedScreen(DrawerItems.PROFILE);
+                Navigator.of(context).pushNamed(ProfileScreen.routeName);
               },
             ),
             Divider(),

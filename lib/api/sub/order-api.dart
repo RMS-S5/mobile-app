@@ -20,7 +20,7 @@ class OrderAPI {
   Future<dynamic> updateOrder(String orderId, dynamic orderData,
       {String? token}) async {
     try {
-      var response = await _conn.put("/api/order/update-order/$orderId",
+      var response = await _conn.put("/api/order/order/$orderId",
           body: orderData, token: token);
       return response;
     } catch (error) {

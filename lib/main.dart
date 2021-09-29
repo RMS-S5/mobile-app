@@ -42,6 +42,11 @@ import './screens/welcome-screen.dart';
 // Waiter Screens
 import './screens/waiter/prepared_orders_screen.dart';
 import './screens/waiter/prepared_order_view_screen.dart';
+import './screens/waiter/serving_orders_screen.dart';
+import './screens/waiter/serving_order_view_screen.dart';
+import './screens/waiter/served_orders_screen.dart';
+import './screens/waiter/served_order_view_screen.dart';
+
 import './screens/waiter/verify_table_screen.dart';
 
 void main() {
@@ -80,6 +85,7 @@ class MyApp extends StatelessWidget {
             create: null,
             update: (ctx, user, previousOrders) => Orders(
                   user.token ?? '',
+                  user.userData['userId'] ?? '',
                   previousOrders != null ? previousOrders.activeOrders : [],
                   previousOrders != null ? previousOrders.tableOrder : {},
                   previousOrders != null
@@ -136,6 +142,14 @@ class MyApp extends StatelessWidget {
                 WaiterPreparedOrderViewScreen(),
             VerifyTableScreen.routeName: (ctx) => VerifyTableScreen(),
             QRScanner.routeName: (ctx) => QRScanner(),
+            WaiterServingOrdersScreen.routeName: (ctx) =>
+                WaiterServingOrdersScreen(),
+            WaiterServingOrderViewScreen.routeName: (ctx) =>
+                WaiterServingOrderViewScreen(),
+            WaiterServedOrdersScreen.routeName: (ctx) =>
+                WaiterServedOrdersScreen(),
+            WaiterServedOrderViewScreen.routeName: (ctx) =>
+                WaiterServedOrderViewScreen(),
           },
         ),
       ),

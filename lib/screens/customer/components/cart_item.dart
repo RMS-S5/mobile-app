@@ -73,9 +73,9 @@ class CartItem extends StatelessWidget {
                   Navigator.of(ctx).pop(true);
                   try {
                     await removeCartItem(cartItemId, context);
-                    Navigator.of(ctx).pop(true);
+                    // Navigator.of(ctx).pop(true);
                   } catch (error) {
-                    Navigator.of(ctx).pop(true);
+                    // Navigator.of(ctx).pop(true);
                     showErrorDialog(error.toString(), context);
                   }
                 },

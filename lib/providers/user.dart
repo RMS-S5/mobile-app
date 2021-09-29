@@ -79,6 +79,8 @@ class User with ChangeNotifier {
       });
       await prefs.setString('userData', localData);
       await prefs.setString('tokenData', tokenData);
+      prefs.remove('cartId');
+      prefs.remove('tableData');
     } catch (error) {
       throw error;
     }
@@ -103,12 +105,18 @@ class User with ChangeNotifier {
 // TODO: Update user
   Future<void> updateUser(Map<String, dynamic> updatedUserData) async {
     try {
-      final customerData = {
+      final userData = {
         "firstName": updatedUserData['firstName'],
         "lastName": updatedUserData['lastName'],
         "mobileNumber": updatedUserData['mobileNumber']
       };
-      // final response = await API.userAPI.customerRegister(customerData);
+      final response = await API.userAPI.updateProfile(userData, token: _token);
+      _userData['firstName'] =
+          updatedUserData['firstName'] ?? _userData['firstName'];
+      _userData['lastName'] =
+          updatedUserData['lastName'] ?? _userData['lastName'];
+      _userData['mobileNumber'] =
+          updatedUserData['firstName'] ?? _userData['firstName'];
     } catch (error) {
       throw error;
     }

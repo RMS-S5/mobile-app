@@ -107,122 +107,125 @@ class _TableVerificationScreenState extends State<TableVerificationScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-                  child: Form(
-                    key: _formKey,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            style: inputTextStyle,
-                            // enabled: tableData.isEmpty,
-                            decoration: InputDecoration(
-                              labelText: 'Verification Code',
-                              icon: Icon(Icons.verified_user_outlined),
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                    child: Form(
+                      key: _formKey,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              style: inputTextStyle,
+                              // enabled: tableData.isEmpty,
+                              decoration: InputDecoration(
+                                labelText: 'Verification Code',
+                                icon: Icon(Icons.verified_user_outlined),
+                              ),
+                              onSaved: (value) {
+                                _verifyData = value ?? "";
+                              },
                             ),
-                            onSaved: (value) {
-                              _verifyData = value ?? "";
-                            },
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(children: [
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: kRejectButtonColor,
-                                  onPrimary: kTextColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Clear',
-                                  style: titleTextStyle1.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                onPressed: () async {
-                                  try {
-                                    await Provider.of<Orders>(context,
-                                            listen: false)
-                                        .clearTableData();
-                                  } catch (error) {
-                                    showErrorDialog(error.toString(), context);
-                                  }
-                                }),
-                            Spacer(),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Theme.of(context).primaryColor,
-                                  onPrimary: kTextColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Submit',
-                                  style: titleTextStyle1.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                onPressed: _submit),
-                          ]),
-                          Consumer<Orders>(builder: (context, orderData, _) {
-                            final tableData = orderData.tableData;
-                            bool showField = !tableData.isEmpty;
-                            return Column(
-                              children: [
-                                if (showField)
-                                  ListTile(
-                                    leading:
-                                        Icon(Icons.auto_awesome_mosaic_rounded),
-                                    title: Text('Table Number',
-                                        style: inputTextStyle),
-                                    trailing: Text(
-                                        tableData['tableNumber'].toString(),
-                                        style: inputTextStyle),
-                                  ),
-                                if (showField)
-                                  ListTile(
-                                    leading: Icon(Icons.balcony),
-                                    title: Text('Branch Name',
-                                        style: inputTextStyle),
-                                    trailing: Text(
-                                      tableData['branchName'],
-                                      style: inputTextStyle,
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(children: [
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: kRejectButtonColor,
+                                    onPrimary: kTextColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
-                                  )
-                              ],
-                            );
-                          }),
-                        ],
+                                  ),
+                                  child: Text(
+                                    'Clear',
+                                    style: titleTextStyle1.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                  onPressed: () async {
+                                    try {
+                                      await Provider.of<Orders>(context,
+                                              listen: false)
+                                          .clearTableData();
+                                    } catch (error) {
+                                      showErrorDialog(
+                                          error.toString(), context);
+                                    }
+                                  }),
+                              Spacer(),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).primaryColor,
+                                    onPrimary: kTextColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Submit',
+                                    style: titleTextStyle1.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                  onPressed: _submit),
+                            ]),
+                            Consumer<Orders>(builder: (context, orderData, _) {
+                              final tableData = orderData.tableData;
+                              bool showField = !tableData.isEmpty;
+                              return Column(
+                                children: [
+                                  if (showField)
+                                    ListTile(
+                                      leading: Icon(
+                                          Icons.auto_awesome_mosaic_rounded),
+                                      title: Text('Table Number',
+                                          style: inputTextStyle),
+                                      trailing: Text(
+                                          tableData['tableNumber'].toString(),
+                                          style: inputTextStyle),
+                                    ),
+                                  if (showField)
+                                    ListTile(
+                                      leading: Icon(Icons.balcony),
+                                      title: Text('Branch Name',
+                                          style: inputTextStyle),
+                                      trailing: Text(
+                                        tableData['branchName'],
+                                        style: inputTextStyle,
+                                      ),
+                                    )
+                                ],
+                              );
+                            }),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: kSuccessButtonColor,
-                      onPrimary: kTextColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: kSuccessButtonColor,
+                        onPrimary: kTextColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      'Show QR Scanner',
-                      style: titleTextStyle1.copyWith(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        Navigator.of(context).pushNamed(QRScanner.routeName);
-                      });
-                    }),
-              ],
+                      child: Text(
+                        'Show QR Scanner',
+                        style: titleTextStyle1.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          Navigator.of(context).pushNamed(QRScanner.routeName);
+                        });
+                      }),
+                ],
+              ),
             ),
     );
   }

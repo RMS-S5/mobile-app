@@ -54,6 +54,7 @@ class Cart with ChangeNotifier {
       }
       _cartId = prefs.getString('cartId') ?? "";
     } catch (error) {
+      print(error);
       throw error;
     }
   }
@@ -79,7 +80,7 @@ class Cart with ChangeNotifier {
       } catch (error) {
         actualPrice = price * quantity;
       }
-
+      print(_cartId);
       var cartItemData = {
         'foodItemId': foodItemId,
         'price': actualPrice,

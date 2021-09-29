@@ -23,4 +23,15 @@ class UserAPI {
       throw error;
     }
   }
+
+  Future<Map<String, dynamic>> updateProfile(Map<String, dynamic> data,
+      {String? token}) async {
+    try {
+      var response = await _conn.put("api/user/update-user-profile",
+          body: data, token: token);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

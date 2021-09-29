@@ -72,6 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<User>(context).userData;
+    print(userData);
     final deviceOrientation = MediaQuery.of(context).orientation;
     return Scaffold(
       appBar: (userData['accountType'] == 'Customer')
@@ -188,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text('Branch Name : ', style: inputTextStyle),
                       ),
-                      icon: Icon(Icons.mobile_screen_share_rounded),
+                      icon: Icon(Icons.house_outlined),
                     ),
                     onSaved: (value) {},
                   ),

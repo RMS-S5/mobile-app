@@ -31,7 +31,10 @@ class FoodItemCard extends StatelessWidget {
                 );
               },
               child: FadeInImage.assetNetwork(
-                  placeholder: foodItemFadeImageUrl, image: imageUrl)
+                placeholder: foodItemFadeImageUrl,
+                image: imageUrl,
+                fit: BoxFit.cover,
+              )
               // child: Image.network(
               //   imageUrl,
               //   fit: BoxFit.cover,

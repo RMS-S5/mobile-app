@@ -57,33 +57,42 @@ class WaiterPreparedOrderViewScreen extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Order Status',
-                          style: titleTextStyle1,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Chip(
-                          label: Text('${orderData["orderStatus"]}',
-                              style: inputTextStyle),
-                          backgroundColor: Theme.of(context).primaryColor,
-                        ),
-                        Spacer(),
-                        TextButton(
-                          child: Text(
-                            'Serve',
-                            style:
-                                textButtonStyle1.copyWith(color: kPrimaryColor),
+                  : SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          FittedBox(
+                            child: Text(
+                              'Order Status',
+                              style: titleTextStyle1,
+                            ),
                           ),
-                          onPressed: () {
-                            serveOrder(orderId, context);
-                          },
-                        ),
-                      ],
+                          SizedBox(
+                            width: 5,
+                          ),
+                          FittedBox(
+                            child: Chip(
+                              label: Text('${orderData["orderStatus"]}',
+                                  style: inputTextStyle),
+                              backgroundColor: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          TextButton(
+                            child: Text(
+                              'Serve',
+                              style: textButtonStyle1.copyWith(
+                                  color: kPrimaryColor),
+                            ),
+                            onPressed: () {
+                              serveOrder(orderId, context);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
             ),
           ),

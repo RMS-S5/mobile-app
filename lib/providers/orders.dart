@@ -12,11 +12,12 @@ class Orders with ChangeNotifier {
   List<dynamic> _waiterServedOrders = [];
 
   String _token;
+  String? _userId;
   String _verificationCode = "";
   Map<String, dynamic> _tableData = {};
   List<dynamic> _branchTables = [];
 
-  Orders(this._token, this._activeOrders, this._tableOrder,
+  Orders(this._token, this._userId, this._activeOrders, this._tableOrder,
       this._waiterServedOrders) {}
 
   //Getters
@@ -65,6 +66,13 @@ class Orders with ChangeNotifier {
         .toList();
   }
 
+  List getOrdersByStatusWaiter(orderStatus) {
+    return _activeOrders
+        .where((order) =>
+            order["orderStatus"] == orderStatus && order['waiterId'] == _userId)
+        .toList();
+  }
+
   // Get Order by Order Id
   Map getOrdersByOrderId(orderId) {
     return _activeOrders.firstWhere((order) => order["orderId"] == orderId);
@@ -96,8 +104,9 @@ class Orders with ChangeNotifier {
       if (_token == null || _token == "") {
         throw HttpException('Token error!');
       }
-      final reponse = await API.orderAPI
+      final response = await API.orderAPI
           .updateOrder(orderId, {"orderStatus": status}, token: _token);
+      await fetchAndSetActiveOrders();
     } catch (error) {
       throw error;
     }
@@ -150,7 +159,8 @@ class Orders with ChangeNotifier {
   Future<void> fetchAndSetActiveOrders() async {
     try {
       if (_token == null || _token == "") {
-        throw HttpException('Token error');
+        return;
+        // throw HttpException('Token error');
       }
       final response = await API.orderAPI.getActiveOrders(
         token: _token,

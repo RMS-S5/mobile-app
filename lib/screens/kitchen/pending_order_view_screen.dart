@@ -23,6 +23,7 @@ class KitchenStaffPendingOrderViewScreen extends StatelessWidget {
       }
       await Provider.of<Orders>(context, listen: false)
           .updateOrderStatus(orderId, kOrderStatusTypes['Preparing']);
+      // Navigator.of(context).pop();
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {

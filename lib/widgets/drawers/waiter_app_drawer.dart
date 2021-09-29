@@ -9,7 +9,12 @@ import './drawer_header.dart';
 
 //Screens import
 import '../../screens/waiter/prepared_orders_screen.dart';
+import '../../screens/waiter/serving_orders_screen.dart';
+import '../../screens/waiter/served_orders_screen.dart';
 import '../../screens/waiter/verify_table_screen.dart';
+
+import '../../screens/welcome-screen.dart';
+import '../../screens/profile-screen.dart';
 
 enum DrawerItems {
   HOME,
@@ -17,6 +22,7 @@ enum DrawerItems {
   SERVINGORDERS,
   SERVEDORDERS,
   LOGOUT,
+  PROFILE,
   VERIFYTABLE
 }
 
@@ -63,30 +69,30 @@ class _WaiterAppDrawerState extends State<WaiterAppDrawer> {
               },
             ),
             Divider(),
-            // DrawerItem(
-            //   selectedDrawerItem: selectedDrawerItem,
-            //   drawerItemName: DrawerItems.PREPARINGORDERS,
-            //   label: "Preparing Orders",
-            //   leadingIcon: Icons.access_time_outlined,
-            //   ontapFunction: () {
-            //     setSelectedScreen(DrawerItems.PREPARINGORDERS);
-            //     Navigator.of(context).pushReplacementNamed(
-            //         KitchenStaffPreparingOrdersScreen.routeName);
-            //   },
-            // ),
-            // Divider(),
-            // DrawerItem(
-            //   selectedDrawerItem: selectedDrawerItem,
-            //   drawerItemName: DrawerItems.PREPAREDORDERS,
-            //   label: "Prepared Orders",
-            //   leadingIcon: Icons.food_bank,
-            //   ontapFunction: () {
-            //     setSelectedScreen(DrawerItems.PREPAREDORDERS);
-            //     Navigator.of(context).pushReplacementNamed(
-            //         KitchenStaffPreparedOrdersScreen.routeName);
-            //   },
-            // ),
-            // Divider(),
+            DrawerItem(
+              selectedDrawerItem: selectedDrawerItem,
+              drawerItemName: DrawerItems.SERVINGORDERS,
+              label: "Serving Orders",
+              leadingIcon: Icons.dinner_dining,
+              ontapFunction: () {
+                setSelectedScreen(DrawerItems.SERVINGORDERS);
+                Navigator.of(context)
+                    .pushReplacementNamed(WaiterServingOrdersScreen.routeName);
+              },
+            ),
+            Divider(),
+            DrawerItem(
+              selectedDrawerItem: selectedDrawerItem,
+              drawerItemName: DrawerItems.SERVEDORDERS,
+              label: "Served Orders",
+              leadingIcon: Icons.dining_outlined,
+              ontapFunction: () {
+                setSelectedScreen(DrawerItems.SERVEDORDERS);
+                Navigator.of(context)
+                    .pushReplacementNamed(WaiterServedOrdersScreen.routeName);
+              },
+            ),
+            Divider(),
             DrawerItem(
               selectedDrawerItem: selectedDrawerItem,
               drawerItemName: DrawerItems.VERIFYTABLE,
@@ -99,6 +105,17 @@ class _WaiterAppDrawerState extends State<WaiterAppDrawer> {
               },
             ),
             Divider(),
+            DrawerItem(
+              selectedDrawerItem: selectedDrawerItem,
+              drawerItemName: DrawerItems.PROFILE,
+              label: "Profile",
+              leadingIcon: Icons.account_circle_outlined,
+              ontapFunction: () {
+                setSelectedScreen(DrawerItems.PROFILE);
+                Navigator.of(context).pushNamed(ProfileScreen.routeName);
+              },
+            ),
+            Divider(),
             SizedBox(
               height: 20,
             ),
@@ -108,11 +125,12 @@ class _WaiterAppDrawerState extends State<WaiterAppDrawer> {
               drawerItemName: DrawerItems.LOGOUT,
               label: "Logout",
               leadingIcon: Icons.exit_to_app,
-              ontapFunction: () async {
+              ontapFunction: () {
                 setSelectedScreen(DrawerItems.LOGOUT);
                 Navigator.of(context).pop();
+                Navigator.of(context)
+                    .pushReplacementNamed(WelcomeScreen.routeName);
                 Provider.of<User>(context, listen: false).logout();
-                Navigator.of(context).pushReplacementNamed('/');
               },
             ),
             Divider(),
