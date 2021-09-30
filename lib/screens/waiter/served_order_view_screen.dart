@@ -87,7 +87,7 @@ class WaiterServedOrderViewScreen extends StatelessWidget {
                           ),
                           TextButton(
                             child: Text(
-                              'Closed',
+                              'Close',
                               style: textButtonStyle1.copyWith(
                                   color: kPrimaryColor),
                             ),

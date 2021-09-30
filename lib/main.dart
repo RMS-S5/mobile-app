@@ -1,7 +1,6 @@
 //  --no-sound-null-safety
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rms_mobile_app/screens/customer/components/home/food_items_grid.dart';
 
 import './config/constants.dart';
 
@@ -21,6 +20,7 @@ import './providers/user.dart';
 // Common Screen
 import './screens/auth/auth-screen.dart';
 import './screens/profile-screen.dart';
+import './screens/change_password_screen.dart';
 
 // Customer Screens
 import 'screens/customer/customer_home_screen.dart';
@@ -118,6 +118,7 @@ class MyApp extends StatelessWidget {
             WelcomeScreen.routeName: (ctx) => WelcomeScreen(),
             AuthScreen.routeName: (ctx) => AuthScreen(),
             ProfileScreen.routeName: (ctx) => ProfileScreen(),
+            ChangePasswordScreen.routeName: (ctx) => ChangePasswordScreen(),
             CustomerHomePageScreen.routeName: (ctx) => CustomerHomePageScreen(),
             CustomerFoodItemScreen.routeName: (ctx) => CustomerFoodItemScreen(),
             CustomerCartScreen.routeName: (ctx) => CustomerCartScreen(),

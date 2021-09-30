@@ -22,6 +22,10 @@ class Cart with ChangeNotifier {
     return [..._cartItems];
   }
 
+  String get cartId {
+    return _cartId;
+  }
+
   List get cartItemsIds {
     return _cartItems.map((cartItem) => cartItem['cartItemId']).toList();
   }

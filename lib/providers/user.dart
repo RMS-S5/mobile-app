@@ -70,6 +70,7 @@ class User with ChangeNotifier {
         'accountType': _userData['accountType'],
         'mobileNumber': _userData['mobileNumber'],
         'branchId': _userData['branchId'],
+        'branchName': _userData['branchName'],
         'nic': _userData['nic'],
       });
 
@@ -102,7 +103,6 @@ class User with ChangeNotifier {
     }
   }
 
-// TODO: Update user
   Future<void> updateUser(Map<String, dynamic> updatedUserData) async {
     try {
       final userData = {
@@ -117,6 +117,38 @@ class User with ChangeNotifier {
           updatedUserData['lastName'] ?? _userData['lastName'];
       _userData['mobileNumber'] =
           updatedUserData['firstName'] ?? _userData['firstName'];
+
+      notifyListeners();
+      // Update the local storage
+      final prefs = await SharedPreferences.getInstance();
+
+      final localData = json.encode({
+        'userId': _userData['userId'],
+        'firstName': _userData['firstName'],
+        'lastName': _userData['lastName'],
+        'email': _userData['email'],
+        'accountType': _userData['accountType'],
+        'mobileNumber': _userData['mobileNumber'],
+        'branchId': _userData['branchId'],
+        'branchName': _userData['branchName'],
+        'nic': _userData['nic'],
+      });
+      await prefs.remove('userData');
+      await prefs.setString('userData', localData);
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  Future<void> chnagePassword(Map<String, dynamic> passwordData) async {
+    try {
+      final passwordD = {
+        "currentPassword": passwordData['currentPassword'],
+        "password": passwordData['password'],
+      };
+      final response = await API.userAPI
+          .changePassword(_userData['userId'], passwordD, token: _token);
     } catch (error) {
       throw error;
     }

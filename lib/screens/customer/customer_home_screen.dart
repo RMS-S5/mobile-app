@@ -37,6 +37,10 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
           .fetchAndSetFoodItems();
       await Provider.of<Categories>(context, listen: false)
           .fetAndSetCategories();
+      final cartId = await Provider.of<Cart>(context, listen: false).cartId;
+      if (cartId == null || cartId == "") {
+        await Provider.of<Cart>(context, listen: false).checkAndSetCart();
+      }
       await Provider.of<Cart>(context, listen: false)
           .fetchAndSetCartItemsData();
     } on HttpException catch (error) {

@@ -7,25 +7,29 @@ import '../models/http_exception.dart';
 import '../widgets/simple_error_dialog.dart';
 import './customer/components/app_bar.dart';
 import '../widgets/staff_app_bar.dart';
-import './change_password_screen.dart';
 
 import '../providers/user.dart';
 import '../config/constants.dart';
 
-class ProfileScreen extends StatefulWidget {
-  static final routeName = "/profile";
+class ChangePasswordScreen extends StatefulWidget {
+  static final routeName = "/password-change";
 
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ChangePasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   var _isInit = true;
   var _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey();
-  Map<String, dynamic> _userUpdatedData = {};
+  String? _password = "";
+  String? _currentPassword = "";
+  bool _showPasswordField = false;
+  bool _showCurrentPasswordField = false;
+  bool _showConfirmPasswordField = false;
+  TextEditingController _passwordController = TextEditingController();
 
   Future<void> _submit() async {
     try {
@@ -37,17 +41,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         _isLoading = true;
       });
-      if (_userUpdatedData == null || _userUpdatedData.isEmpty) {
+      if (_password == null ||
+          _password == "" ||
+          _currentPassword == null ||
+          _currentPassword == "") {
         setState(() {
           _isLoading = false;
         });
         return;
       }
       final response = await Provider.of<User>(context, listen: false)
-          .updateUser(_userUpdatedData);
+          .chnagePassword(
+              {'currentPassword': _currentPassword, 'password': _password});
 
       final snackBar = SnackBar(
-        content: const Text('User detaild modified'),
+        content: const Text('Passowrd Chnaged'),
         duration: Duration(
           milliseconds: 2000,
         ),
@@ -95,22 +103,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
                 title: TextFormField(
                   style: inputTextStyle,
-                  // enabled: false,
-                  // readOnly: true,
-                  initialValue: userData['firstName'],
+                  obscureText: !_showCurrentPasswordField,
                   decoration: InputDecoration(
-                    prefix: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('First Name : ', style: inputTextStyle),
+                    label: Text('Current Password : ', style: inputTextStyle),
+                    // icon: Icon(Icons.password_outlined),sfsdf
+                    suffix: IconButton(
+                      icon: _showCurrentPasswordField
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility_rounded),
+                      onPressed: () {
+                        setState(() {
+                          _showCurrentPasswordField =
+                              !_showCurrentPasswordField;
+                        });
+                      },
                     ),
-                    icon: Icon(Icons.three_p_outlined),
                   ),
                   validator: ValidationBuilder().minLength(3).build(),
                   onSaved: (value) {
-                    if (value == userData['firstName']) {
+                    if (value == null || value == "") {
                       return;
                     }
-                    _userUpdatedData['firstName'] = value;
+                    _currentPassword = value;
                   },
                 ),
               ),
@@ -118,22 +132,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
                 title: TextFormField(
                   style: inputTextStyle,
-                  // enabled: false,
-                  // readOnly: true,
-                  initialValue: userData['lastName'],
+                  controller: _passwordController,
+                  obscureText: !_showPasswordField,
                   decoration: InputDecoration(
-                    prefix: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('Last Name : ', style: inputTextStyle),
+                    label: Text('Password : ', style: inputTextStyle),
+                    // icon: Icon(Icons.password_outlined),
+                    suffix: IconButton(
+                      icon: _showPasswordField
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility_rounded),
+                      onPressed: () {
+                        setState(() {
+                          _showPasswordField = !_showPasswordField;
+                        });
+                      },
                     ),
-                    icon: Icon(Icons.toc),
                   ),
                   validator: ValidationBuilder().minLength(3).build(),
                   onSaved: (value) {
-                    if (value == userData['lastName']) {
+                    if (value == null || value == "") {
                       return;
                     }
-                    _userUpdatedData['lastName'] = value;
+                    _password = value;
                   },
                 ),
               ),
@@ -141,75 +161,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
                 title: TextFormField(
                   style: inputTextStyle,
-                  enabled: false,
-                  readOnly: true,
-                  initialValue: userData['email'],
+                  enabled: true,
+                  initialValue: "",
+                  validator: (value) {
+                    if (value != _passwordController.text) {
+                      print(_passwordController.text);
+                      return 'Passwords do not match!';
+                    }
+                  },
+                  obscureText: !_showConfirmPasswordField,
                   decoration: InputDecoration(
-                    prefix: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('Email : ', style: inputTextStyle),
+                    label: Text('Confirm Password : ', style: inputTextStyle),
+                    // icon: Icon(Icons.confirmation_num),
+                    suffix: IconButton(
+                      icon: _showConfirmPasswordField
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility_rounded),
+                      onPressed: () {
+                        setState(() {
+                          _showConfirmPasswordField =
+                              !_showConfirmPasswordField;
+                        });
+                      },
                     ),
-                    icon: Icon(Icons.email),
                   ),
                   onSaved: (_) {},
                 ),
               ),
-              ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                title: TextFormField(
-                  style: inputTextStyle,
-                  keyboardType: TextInputType.number,
-                  initialValue: userData['mobileNumber'],
-                  decoration: InputDecoration(
-                    prefix: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text('Mobile : ', style: inputTextStyle),
-                    ),
-                    icon: Icon(Icons.mobile_screen_share_rounded),
-                  ),
-                  validator: ValidationBuilder().phone().build(),
-                  onSaved: (value) {
-                    if (value == userData['mobileNumber']) {
-                      return;
-                    }
-                    _userUpdatedData['mobileNumber'] = value;
-                  },
-                ),
-              ),
-              if (userData['accountType'] != 'Customer')
-                ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                  title: TextFormField(
-                    style: inputTextStyle,
-                    enabled: false,
-                    readOnly: true,
-                    initialValue: userData['branchName'],
-                    decoration: InputDecoration(
-                      prefix: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text('Branch Name : ', style: inputTextStyle),
-                      ),
-                      icon: Icon(Icons.house_outlined),
-                    ),
-                    onSaved: (value) {},
-                  ),
-                ),
               SizedBox(
                 height: 20,
               ),
               Row(children: [
-                SizedBox(
-                  width: 20,
-                ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(ChangePasswordScreen.routeName);
-                    },
-                    child: Text(
-                      'Change Password',
-                      style: titleTextStyle1.copyWith(color: kPrimaryColor),
-                    )),
                 Spacer(),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -220,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     child: Text(
-                      'Update',
+                      'Update password',
                       style: titleTextStyle1.copyWith(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
