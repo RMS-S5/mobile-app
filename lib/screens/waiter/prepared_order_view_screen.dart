@@ -62,11 +62,9 @@ class WaiterPreparedOrderViewScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          FittedBox(
-                            child: Text(
-                              'Order Status',
-                              style: titleTextStyle1,
-                            ),
+                          Text(
+                            'Order Status',
+                            style: titleTextStyle1,
                           ),
                           SizedBox(
                             width: 5,

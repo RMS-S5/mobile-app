@@ -74,43 +74,52 @@ class KitchenStaffPendingOrderViewScreen extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Order Status',
-                          style: titleTextStyle1,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Chip(
-                          label: Text('${orderData["orderStatus"]}',
-                              style: inputTextStyle),
-                          backgroundColor: Theme.of(context).primaryColor,
-                        ),
-                        Spacer(),
-                        TextButton(
-                          child: Text(
-                            'Prepare',
-                            style:
-                                textButtonStyle1.copyWith(color: kPrimaryColor),
+                  : SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          FittedBox(
+                            child: Text(
+                              'Order Status',
+                              style: titleTextStyle1,
+                            ),
                           ),
-                          onPressed: () {
-                            prepareOrder(orderId, context);
-                          },
-                        ),
-                        TextButton(
-                          child: Text(
-                            'Reject',
-                            style: textButtonStyle1.copyWith(
-                                color: kRejectButtonColor),
+                          SizedBox(
+                            width: 5,
                           ),
-                          onPressed: () {
-                            rejectOrder(orderId, context);
-                          },
-                        ),
-                      ],
+                          FittedBox(
+                            child: Chip(
+                              label: Text('${orderData["orderStatus"]}',
+                                  style: inputTextStyle),
+                              backgroundColor: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          TextButton(
+                            child: Text(
+                              'Prepare',
+                              style: textButtonStyle1.copyWith(
+                                  color: kPrimaryColor),
+                            ),
+                            onPressed: () {
+                              prepareOrder(orderId, context);
+                            },
+                          ),
+                          TextButton(
+                            child: Text(
+                              'Reject',
+                              style: textButtonStyle1.copyWith(
+                                  color: kRejectButtonColor),
+                            ),
+                            onPressed: () {
+                              rejectOrder(orderId, context);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
             ),
           ),

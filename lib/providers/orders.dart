@@ -90,7 +90,7 @@ class Orders with ChangeNotifier {
         'tableNumber': _tableData['tableNumber'],
         'branchId': _tableData['branchId'],
       };
-      final reponse = await API.orderAPI.addOrder(data);
+      final reponse = await API.orderAPI.addOrder(data, token: _token);
 
       notifyListeners();
     } catch (error) {
