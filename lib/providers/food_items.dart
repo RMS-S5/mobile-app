@@ -6,14 +6,19 @@ import '../api/api.dart';
 class FoodItems with ChangeNotifier {
   List _foodItems = [];
 
-  String _token;
+  String _token = "";
 
   FoodItems(this._token, previousFoodItemData) {
-    if (previousFoodItemData != []) {
-      this._foodItems = previousFoodItemData;
-    }
-    ;
+    // this._token = token;
+    this._foodItems = previousFoodItemData;
   }
+
+  // void update(token, previousFoodItemData) {
+  //   _token = token;
+  //   if (previousFoodItemData != []) {
+  //     this._foodItems = previousFoodItemData;
+  //   }
+  // }
 
   List get foodItems {
     return [..._foodItems];

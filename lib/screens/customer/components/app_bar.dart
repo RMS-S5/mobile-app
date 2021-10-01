@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 
 import '../../../providers/cart.dart';
 import '../../../providers/notifications.dart';
+
 import '../../../widgets/badge.dart';
 import '../cart_screen.dart';
 import '../../../../config/constants.dart';
+import '../../notifications_screen.dart';
 
 AppBar customerAppBar(BuildContext context) {
   return AppBar(
@@ -39,7 +41,9 @@ AppBar customerAppBar(BuildContext context) {
             Icons.notifications,
             color: kTextColor,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(NotificationScreen.routeName);
+          },
         ),
       ),
       Consumer<Cart>(

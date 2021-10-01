@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api.dart';
@@ -164,6 +163,9 @@ class User with ChangeNotifier {
   }
 
   Future<bool> tryAutoLogin() async {
+    if (!_userData.isEmpty) {
+      return true;
+    }
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userData') || !prefs.containsKey('tokenData')) {
       return false;

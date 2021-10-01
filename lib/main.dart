@@ -1,7 +1,10 @@
 //  --no-sound-null-safety
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+import './services/local_notification_service.dart';
 import './config/constants.dart';
 
 /**
@@ -18,9 +21,11 @@ import './providers/user.dart';
  * Route imports
  */
 // Common Screen
+import './loading_screen.dart';
 import './screens/auth/auth-screen.dart';
 import './screens/profile-screen.dart';
 import './screens/change_password_screen.dart';
+import './screens/notifications_screen.dart';
 
 // Customer Screens
 import 'screens/customer/customer_home_screen.dart';
@@ -49,7 +54,19 @@ import './screens/waiter/served_order_view_screen.dart';
 
 import './screens/waiter/verify_table_screen.dart';
 
-void main() {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocalNotificationService.initialize();
+  await Firebase.initializeApp();
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(MyApp());
 }
 
@@ -103,18 +120,10 @@ class MyApp extends StatelessWidget {
             errorColor: kRejectButtonColor,
             scaffoldBackgroundColor: Colors.white,
           ),
-          home: user.isAuth()
-              ? userHomeScreen(user.isAuth(), user.accountType)
-              : FutureBuilder(
-                  future: user.tryAutoLogin(),
-                  builder: (ctx, userResultSnapShot) =>
-                      userResultSnapShot.connectionState ==
-                              ConnectionState.waiting
-                          ? WelcomeScreen()
-                          : WelcomeScreen(),
-                ),
+          home: LoadingScreen(),
           // initialRoute: WelcomeScreen.routeName,
           routes: {
+            NotificationScreen.routeName: (ctx) => NotificationScreen(),
             WelcomeScreen.routeName: (ctx) => WelcomeScreen(),
             AuthScreen.routeName: (ctx) => AuthScreen(),
             ProfileScreen.routeName: (ctx) => ProfileScreen(),
