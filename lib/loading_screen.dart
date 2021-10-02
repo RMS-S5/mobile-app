@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:rms_mobile_app/widgets/simple_error_dialog.dart';
+
+import '../widgets/notification_wrapper.dart';
+import '../widgets/simple_error_dialog.dart';
 
 import './providers/user.dart';
 import './providers/orders.dart';
@@ -61,6 +63,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         await FirebaseMessaging.instance.subscribeToTopic('order-waiter');
         break;
       default:
+        await FirebaseMessaging.instance.subscribeToTopic('order-customer');
         break;
     }
   }
@@ -112,37 +115,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
   }
 
-  Future<void> setupInteractedMessage() async {
-    // Subscribe to relevant topics
-    await subscribeToEvent();
-
-    // FirebaseMessaging.instance.getInitialMessage().then((message) {
-    //   if (message != null) {
-    //     print(message.notification?.title);
-    //   }
-    // });
-
-    // //TODO : send this with order
-    // _fmToken = await FirebaseMessaging.instance.getToken();
-
-    // // While app on the foreground
-    // FirebaseMessaging.onMessage.listen((message) async {
-    //   await handleNotifications(message);
-    // });
-
-    // // App in the background and opened when tap
-    // FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-    //   print("on message received");
-    //   await handleNotifications(message);
-    // });
-  }
-
   Future<void> _onLoad() async {
     setState(() {
       _isLoading = true;
     });
     await Provider.of<User>(context, listen: false).tryAutoLogin();
-    await setupInteractedMessage();
+    await subscribeToEvent();
     setState(() {
       _isLoading = false;
     });
