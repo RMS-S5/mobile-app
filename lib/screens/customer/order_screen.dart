@@ -49,81 +49,98 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
   Widget build(BuildContext context) {
     final orderData = Provider.of<Orders>(context).tableOrder;
     return Scaffold(
-      appBar: customerAppBar(context),
-      drawer: CustomerAppDrawer(
-        drawerItemName: DrawerItems.ORDER,
-      ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : (orderData.isEmpty)
-              ? Column(
-                  children: <Widget>[
-                    Card(
-                      margin: EdgeInsets.all(15),
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'No order Found',
-                              style: titleTextStyle1,
-                            ),
-                            Spacer(),
-                            // Chip(
-                            //   label: Text('${orderData["orderStatus"]}',
-                            //       style: inputTextStyle),
-                            //   backgroundColor: Theme.of(context).primaryColor,
-                            // ),
-                          ],
-                        ),
-                      ),
-                    ),
+        appBar: customerAppBar(context),
+        drawer: CustomerAppDrawer(
+          drawerItemName: DrawerItems.ORDER,
+        ),
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : RefreshIndicator(
+                onRefresh: () async {
+                  await Provider.of<Orders>(context, listen: false)
+                      .fetchAndSetTableOrder();
+                },
+                child: Stack(
+                  children: [
+                    ListView(),
+                    (orderData.isEmpty)
+                        ? Column(
+                            children: <Widget>[
+                              Card(
+                                margin: EdgeInsets.all(15),
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        'No order Found',
+                                        style: titleTextStyle1,
+                                      ),
+                                      Spacer(),
+                                      // Chip(
+                                      //   label: Text('${orderData["orderStatus"]}',
+                                      //       style: inputTextStyle),
+                                      //   backgroundColor: Theme.of(context).primaryColor,
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: <Widget>[
+                              Card(
+                                margin: EdgeInsets.all(15),
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        'Order Status',
+                                        style: titleTextStyle1,
+                                      ),
+                                      Spacer(),
+                                      Chip(
+                                        label: Text(
+                                            '${orderData["orderStatus"]}',
+                                            style: inputTextStyle),
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: orderData["cartItems"]?.length,
+                                  itemBuilder: (ctx, i) => OrderItem(
+                                    cartItemId: orderData["cartItems"]?[i]
+                                        ["cartItemId"],
+                                    foodItemId: orderData["cartItems"]?[i]
+                                        ["foodItemId"],
+                                    imageUrl: orderData["cartItems"]?[i]
+                                        ["imageUrl"],
+                                    name: orderData["cartItems"]?[i]["name"],
+                                    price: orderData["cartItems"][i]["price"],
+                                    quantity: orderData["cartItems"]?[i]
+                                        ["quantity"],
+                                    variantName: orderData["cartItems"]?[i]
+                                        ['variant_name'],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                   ],
-                )
-              : Column(
-                  children: <Widget>[
-                    Card(
-                      margin: EdgeInsets.all(15),
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Order Status',
-                              style: titleTextStyle1,
-                            ),
-                            Spacer(),
-                            Chip(
-                              label: Text('${orderData["orderStatus"]}',
-                                  style: inputTextStyle),
-                              backgroundColor: Theme.of(context).primaryColor,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: orderData["cartItems"]?.length,
-                        itemBuilder: (ctx, i) => OrderItem(
-                          cartItemId: orderData["cartItems"]?[i]["cartItemId"],
-                          foodItemId: orderData["cartItems"]?[i]["foodItemId"],
-                          imageUrl: orderData["cartItems"]?[i]["imageUrl"],
-                          name: orderData["cartItems"]?[i]["name"],
-                          price: orderData["cartItems"][i]["price"],
-                          quantity: orderData["cartItems"]?[i]["quantity"],
-                          variantName: orderData["cartItems"]?[i]
-                              ['variant_name'],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-    );
+                )));
   }
 }

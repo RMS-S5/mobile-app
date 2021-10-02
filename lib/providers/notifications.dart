@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:uuid/uuid.dart';
 
 class Notifications with ChangeNotifier {
   List _notifications = [];
@@ -22,8 +23,9 @@ class Notifications with ChangeNotifier {
   }
 
   void addNotifications(RemoteMessage message) {
+    final uuid = Uuid();
     final msg = {
-      'id': message.messageId,
+      'id': uuid.v4(),
       'title': message.notification?.title,
       'description': message.notification?.body
     };
@@ -32,7 +34,7 @@ class Notifications with ChangeNotifier {
   }
 
   void removeNotification(messageId) {
-    _notifications.removeWhere((item) => item['messageId'] == messageId);
+    _notifications.removeWhere((item) => item['id'] == messageId);
     notifyListeners();
   }
 

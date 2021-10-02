@@ -37,23 +37,27 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   String? _fmToken;
+  bool _isLoading = false;
 
-  void subscribeToEvent() async {
+  Future<void> subscribeToEvent() async {
     final accountType = Provider.of<User>(context, listen: false).accountType;
     print(accountType);
-    await FirebaseMessaging.instance.unsubscribeFromTopic('customer');
     await FirebaseMessaging.instance
         .unsubscribeFromTopic('order-kitchen-staff');
+    await FirebaseMessaging.instance.unsubscribeFromTopic('order-customer');
     await FirebaseMessaging.instance.unsubscribeFromTopic('order-waiter');
     switch (accountType) {
       case 'Customer':
+        print('Customer topic');
         await FirebaseMessaging.instance.subscribeToTopic('order-customer');
         break;
       case 'Kitchen Staff':
+        print('Kitchen topic');
         await FirebaseMessaging.instance
             .subscribeToTopic('order-kitchen-staff');
         break;
       case 'Waiter':
+        print('Waiter topic');
         await FirebaseMessaging.instance.subscribeToTopic('order-waiter');
         break;
       default:
@@ -64,13 +68,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
   // Handle incoming notifications
   Future<void> handleNotifications(RemoteMessage message) async {
     try {
-      LocalNotificationService.display(message);
+      print("Handle notification called");
       final accountType = Provider.of<User>(context, listen: false).accountType;
       final tableData = Provider.of<Orders>(context, listen: false).tableData;
+      print("this is accountttt");
+      print(accountType);
+      LocalNotificationService.display(message);
+
       Provider.of<Notifications>(context, listen: false)
           .addNotifications(message);
+
       if (message.data != null) {
         final type = message.data['type'];
+        print("this is type");
+        print(type);
         switch (type) {
           case 'customer':
             if (tableData.isEmpty) {
@@ -95,14 +106,53 @@ class _LoadingScreenState extends State<LoadingScreen> {
         }
       }
     } catch (error) {
-      showErrorDialog(error.toString(), context);
+      print('Handle notifications error');
+      print(error);
+      // showErrorDialog(error.toString(), context);
     }
   }
 
   Future<void> setupInteractedMessage() async {
     // Subscribe to relevant topics
-    subscribeToEvent();
+    await subscribeToEvent();
 
+    // FirebaseMessaging.instance.getInitialMessage().then((message) {
+    //   if (message != null) {
+    //     print(message.notification?.title);
+    //   }
+    // });
+
+    // //TODO : send this with order
+    // _fmToken = await FirebaseMessaging.instance.getToken();
+
+    // // While app on the foreground
+    // FirebaseMessaging.onMessage.listen((message) async {
+    //   await handleNotifications(message);
+    // });
+
+    // // App in the background and opened when tap
+    // FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+    //   print("on message received");
+    //   await handleNotifications(message);
+    // });
+  }
+
+  Future<void> _onLoad() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await Provider.of<User>(context, listen: false).tryAutoLogin();
+    await setupInteractedMessage();
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      await _onLoad();
+    });
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
         print(message.notification?.title);
@@ -110,7 +160,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     });
 
     //TODO : send this with order
-    _fmToken = await FirebaseMessaging.instance.getToken();
+    // _fmToken = await FirebaseMessaging.instance.getToken();
 
     // While app on the foreground
     FirebaseMessaging.onMessage.listen((message) async {
@@ -119,34 +169,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     // App in the background and opened when tap
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+      print("on message received");
       await handleNotifications(message);
-    });
-  }
-
-  Future<void> _onLoad() async {
-    await Provider.of<User>(context, listen: false).tryAutoLogin();
-    setupInteractedMessage();
-  }
-
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      _onLoad();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    return FutureBuilder(
-      future: user.tryAutoLogin(),
-      builder: (ctx, userResultSnapShot) =>
-          userResultSnapShot.connectionState == ConnectionState.waiting
-              ? SplashScreen()
-              : user.isAuth()
-                  ? userHomeScreen(user.isAuth(), user.accountType)
-                  : WelcomeScreen(),
-    );
+    return _isLoading
+        ? SplashScreen()
+        : user.isAuth()
+            ? userHomeScreen(user.isAuth(), user.accountType)
+            : WelcomeScreen();
   }
 }
 

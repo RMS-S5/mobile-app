@@ -29,6 +29,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     final notification = Provider.of<Notifications>(context);
+    print(notification.notifications);
     return Scaffold(
       appBar: commonAppBar(context),
       body: _isLoading
@@ -61,7 +62,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   child: ListView.builder(
                     itemCount: notification.notificationCount,
                     itemBuilder: (ctx, i) => NotificationItem(
-                      notification.notifications[i]['notificationId'],
+                      notification.notifications[i]['id'],
                       notification.notifications[i]['title'],
                       notification.notifications[i]['description'],
                     ),
