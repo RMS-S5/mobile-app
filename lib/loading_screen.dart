@@ -65,18 +65,33 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Future<void> handleNotifications(RemoteMessage message) async {
     try {
       LocalNotificationService.display(message);
+      final accountType = Provider.of<User>(context, listen: false).accountType;
+      final tableData = Provider.of<Orders>(context, listen: false).tableData;
       Provider.of<Notifications>(context, listen: false)
           .addNotifications(message);
       if (message.data != null) {
-        final orderStatus = message.data['orderStatus'];
-        switch (orderStatus) {
-          case 'Preparing':
-            // await Provider.of<Orders>(context, listen: false)
-            //     .fetchAndSetTableOrder();
+        final type = message.data['type'];
+        switch (type) {
+          case 'customer':
+            if (tableData.isEmpty) {
+              break;
+              return;
+            }
+            await Provider.of<Orders>(context, listen: false)
+                .fetchAndSetTableOrder();
             break;
-          default:
+          case 'staff':
+            if (accountType == null ||
+                accountType == "" ||
+                accountType == 'Customer') {
+              break;
+              return;
+            }
             await Provider.of<Orders>(context, listen: false)
                 .fetchAndSetActiveOrders();
+            break;
+          default:
+            break;
         }
       }
     } catch (error) {
