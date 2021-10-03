@@ -193,10 +193,10 @@ class User with ChangeNotifier {
     prefs.remove('userData');
     prefs.remove('tokenData');
     prefs.remove('cartId');
-    await FirebaseMessaging.instance
-        .unsubscribeFromTopic('order-kitchen-staff');
-    await FirebaseMessaging.instance.unsubscribeFromTopic('order-customer');
-    await FirebaseMessaging.instance.unsubscribeFromTopic('order-waiter');
+    // await FirebaseMessaging.instance
+    //     .unsubscribeFromTopic('order-kitchen-staff');
+    // await FirebaseMessaging.instance.unsubscribeFromTopic('order-customer');
+    // await FirebaseMessaging.instance.unsubscribeFromTopic('order-waiter');
   }
 
   // Auto logout
