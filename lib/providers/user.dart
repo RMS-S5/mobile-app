@@ -81,7 +81,6 @@ class User with ChangeNotifier {
       await prefs.setString('userData', localData);
       await prefs.setString('tokenData', tokenData);
       prefs.remove('cartId');
-      prefs.remove('tableData');
     } catch (error) {
       throw error;
     }
@@ -193,19 +192,5 @@ class User with ChangeNotifier {
     prefs.remove('userData');
     prefs.remove('tokenData');
     prefs.remove('cartId');
-    // await FirebaseMessaging.instance
-    //     .unsubscribeFromTopic('order-kitchen-staff');
-    // await FirebaseMessaging.instance.unsubscribeFromTopic('order-customer');
-    // await FirebaseMessaging.instance.unsubscribeFromTopic('order-waiter');
   }
-
-  // Auto logout
-  // Future<void> autoLogout() async {
-  //   if (isAuth()) return;
-  //   _token = null;
-  //   _userData = {};
-  //   notifyListeners();
-  //   final prefs = await SharedPreferences.getInstance();
-  // prefs.clear();
-  // }
 }

@@ -27,10 +27,8 @@ class _NotificationWrapperState extends State<NotificationWrapper> {
   // Handle incoming notifications
   Future<void> handleNotifications(RemoteMessage message) async {
     try {
-      print("Handle notification called");
       final accountType = Provider.of<User>(context, listen: false).accountType;
       final tableData = Provider.of<Orders>(context, listen: false).tableData;
-      print("this is accountttt");
       print(accountType);
       LocalNotificationService.display(message);
 
@@ -39,7 +37,6 @@ class _NotificationWrapperState extends State<NotificationWrapper> {
 
       if (message.data != null) {
         final type = message.data['type'];
-        print("this is type");
         print(type);
         switch (type) {
           case 'customer':
@@ -65,35 +62,18 @@ class _NotificationWrapperState extends State<NotificationWrapper> {
         }
       }
     } catch (error) {
-      print('Handle notifications error');
       print(error);
-      // showErrorDialog(error.toString(), context);
+      showErrorDialog("Notification Receiving Error!", context);
     }
   }
 
-  // Future<void> _onLoad() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   await Provider.of<User>(context, listen: false).tryAutoLogin();
-  //   setState(() {
-  //     _isLoading = false;
-  //   });
-  // }
-
   void initState() {
     super.initState();
-    // Future.delayed(Duration.zero, () async {
-    //   await _onLoad();
-    // });
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
         print(message.notification?.title);
       }
     });
-
-    //TODO : send this with order
-    // _fmToken = await FirebaseMessaging.instance.getToken();
 
     // While app on the foreground
     FirebaseMessaging.onMessage.listen((message) async {

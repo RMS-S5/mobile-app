@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:rms_mobile_app/widgets/notification_wrapper.dart';
 
 import './services/local_notification_service.dart';
 import './config/constants.dart';
@@ -71,6 +72,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  var navigatorKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -101,68 +103,71 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<User, Orders>(
             create: null,
             update: (ctx, user, previousOrders) => Orders(
-                  user.token ?? '',
-                  user.userData['userId'] ?? '',
-                  previousOrders != null ? previousOrders.activeOrders : [],
-                  previousOrders != null ? previousOrders.tableOrder : {},
-                  previousOrders != null
-                      ? previousOrders.waiterServedOrders
-                      : [],
-                )),
+                user.token ?? '',
+                user.userData['userId'] ?? '',
+                previousOrders != null ? previousOrders.activeOrders : [],
+                previousOrders != null ? previousOrders.tableOrder : {},
+                previousOrders != null ? previousOrders.waiterServedOrders : [],
+                previousOrders != null ? previousOrders.fcmToken : null)),
       ],
-      child: Consumer<User>(
-        builder: (ctx, user, _) => MaterialApp(
-          title: 'RMS',
-          theme: ThemeData(
-            fontFamily: fontFamily,
-            primaryColor: kPrimaryColor,
-            accentColor: kSecondaryColor,
-            errorColor: kRejectButtonColor,
-            scaffoldBackgroundColor: Colors.white,
+      child: Consumer<User>(builder: (ctx, user, _) {
+        return NotificationWrapper(
+          MaterialApp(
+            navigatorKey: navigatorKey,
+            title: 'RMS',
+            theme: ThemeData(
+              fontFamily: fontFamily,
+              primaryColor: kPrimaryColor,
+              accentColor: kSecondaryColor,
+              errorColor: kRejectButtonColor,
+              scaffoldBackgroundColor: Colors.white,
+            ),
+            home: LoadingScreen(),
+            // initialRoute: WelcomeScreen.routeName,
+            routes: {
+              NotificationScreen.routeName: (ctx) => NotificationScreen(),
+              WelcomeScreen.routeName: (ctx) => WelcomeScreen(),
+              AuthScreen.routeName: (ctx) => AuthScreen(),
+              ProfileScreen.routeName: (ctx) => ProfileScreen(),
+              ChangePasswordScreen.routeName: (ctx) => ChangePasswordScreen(),
+              CustomerHomePageScreen.routeName: (ctx) =>
+                  CustomerHomePageScreen(),
+              CustomerFoodItemScreen.routeName: (ctx) =>
+                  CustomerFoodItemScreen(),
+              CustomerCartScreen.routeName: (ctx) => CustomerCartScreen(),
+              CustomerOrderScreen.routeName: (ctx) => CustomerOrderScreen(),
+              TableVerificationScreen.routeName: (ctx) =>
+                  TableVerificationScreen(),
+              KitchenStaffPendingOrdersScreen.routeName: (ctx) =>
+                  KitchenStaffPendingOrdersScreen(),
+              KitchenStaffPendingOrderViewScreen.routeName: (ctx) =>
+                  KitchenStaffPendingOrderViewScreen(),
+              KitchenStaffPreparingOrdersScreen.routeName: (ctx) =>
+                  KitchenStaffPreparingOrdersScreen(),
+              KitchenStaffPreparingOrderViewScreen.routeName: (ctx) =>
+                  KitchenStaffPreparingOrderViewScreen(),
+              KitchenStaffPreparedOrdersScreen.routeName: (ctx) =>
+                  KitchenStaffPreparedOrdersScreen(),
+              KitchenStaffPreparedOrderViewScreen.routeName: (ctx) =>
+                  KitchenStaffPreparedOrderViewScreen(),
+              WaiterPreparedOrdersScreen.routeName: (ctx) =>
+                  WaiterPreparedOrdersScreen(),
+              WaiterPreparedOrderViewScreen.routeName: (ctx) =>
+                  WaiterPreparedOrderViewScreen(),
+              VerifyTableScreen.routeName: (ctx) => VerifyTableScreen(),
+              QRScanner.routeName: (ctx) => QRScanner(),
+              WaiterServingOrdersScreen.routeName: (ctx) =>
+                  WaiterServingOrdersScreen(),
+              WaiterServingOrderViewScreen.routeName: (ctx) =>
+                  WaiterServingOrderViewScreen(),
+              WaiterServedOrdersScreen.routeName: (ctx) =>
+                  WaiterServedOrdersScreen(),
+              WaiterServedOrderViewScreen.routeName: (ctx) =>
+                  WaiterServedOrderViewScreen(),
+            },
           ),
-          home: LoadingScreen(),
-          // initialRoute: WelcomeScreen.routeName,
-          routes: {
-            NotificationScreen.routeName: (ctx) => NotificationScreen(),
-            WelcomeScreen.routeName: (ctx) => WelcomeScreen(),
-            AuthScreen.routeName: (ctx) => AuthScreen(),
-            ProfileScreen.routeName: (ctx) => ProfileScreen(),
-            ChangePasswordScreen.routeName: (ctx) => ChangePasswordScreen(),
-            CustomerHomePageScreen.routeName: (ctx) => CustomerHomePageScreen(),
-            CustomerFoodItemScreen.routeName: (ctx) => CustomerFoodItemScreen(),
-            CustomerCartScreen.routeName: (ctx) => CustomerCartScreen(),
-            CustomerOrderScreen.routeName: (ctx) => CustomerOrderScreen(),
-            TableVerificationScreen.routeName: (ctx) =>
-                TableVerificationScreen(),
-            KitchenStaffPendingOrdersScreen.routeName: (ctx) =>
-                KitchenStaffPendingOrdersScreen(),
-            KitchenStaffPendingOrderViewScreen.routeName: (ctx) =>
-                KitchenStaffPendingOrderViewScreen(),
-            KitchenStaffPreparingOrdersScreen.routeName: (ctx) =>
-                KitchenStaffPreparingOrdersScreen(),
-            KitchenStaffPreparingOrderViewScreen.routeName: (ctx) =>
-                KitchenStaffPreparingOrderViewScreen(),
-            KitchenStaffPreparedOrdersScreen.routeName: (ctx) =>
-                KitchenStaffPreparedOrdersScreen(),
-            KitchenStaffPreparedOrderViewScreen.routeName: (ctx) =>
-                KitchenStaffPreparedOrderViewScreen(),
-            WaiterPreparedOrdersScreen.routeName: (ctx) =>
-                WaiterPreparedOrdersScreen(),
-            WaiterPreparedOrderViewScreen.routeName: (ctx) =>
-                WaiterPreparedOrderViewScreen(),
-            VerifyTableScreen.routeName: (ctx) => VerifyTableScreen(),
-            QRScanner.routeName: (ctx) => QRScanner(),
-            WaiterServingOrdersScreen.routeName: (ctx) =>
-                WaiterServingOrdersScreen(),
-            WaiterServingOrderViewScreen.routeName: (ctx) =>
-                WaiterServingOrderViewScreen(),
-            WaiterServedOrdersScreen.routeName: (ctx) =>
-                WaiterServedOrdersScreen(),
-            WaiterServedOrderViewScreen.routeName: (ctx) =>
-                WaiterServedOrderViewScreen(),
-          },
-        ),
-      ),
+        );
+      }),
     );
   }
 }

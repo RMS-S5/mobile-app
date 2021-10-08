@@ -43,16 +43,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   Future<void> subscribeToEvent() async {
     final accountType = Provider.of<User>(context, listen: false).accountType;
-    print(accountType);
+
+    if (accountType == null || accountType == 'customer') {
+      final _fcmToken = await FirebaseMessaging.instance.getToken();
+      print('tokenset');
+      print(_fcmToken);
+      Provider.of<Orders>(context, listen: false).setFCMToken(_fcmToken);
+      return;
+    }
+    // If subscribed earlier, unsubscribe them.
     await FirebaseMessaging.instance
         .unsubscribeFromTopic('order-kitchen-staff');
     await FirebaseMessaging.instance.unsubscribeFromTopic('order-customer');
     await FirebaseMessaging.instance.unsubscribeFromTopic('order-waiter');
+
     switch (accountType) {
-      case 'Customer':
-        print('Customer topic');
-        await FirebaseMessaging.instance.subscribeToTopic('order-customer');
-        break;
       case 'Kitchen Staff':
         print('Kitchen topic');
         await FirebaseMessaging.instance
@@ -63,55 +68,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         await FirebaseMessaging.instance.subscribeToTopic('order-waiter');
         break;
       default:
-        await FirebaseMessaging.instance.subscribeToTopic('order-customer');
         break;
-    }
-  }
-
-  // Handle incoming notifications
-  Future<void> handleNotifications(RemoteMessage message) async {
-    try {
-      print("Handle notification called");
-      final accountType = Provider.of<User>(context, listen: false).accountType;
-      final tableData = Provider.of<Orders>(context, listen: false).tableData;
-      print("this is accountttt");
-      print(accountType);
-      LocalNotificationService.display(message);
-
-      Provider.of<Notifications>(context, listen: false)
-          .addNotifications(message);
-
-      if (message.data != null) {
-        final type = message.data['type'];
-        print("this is type");
-        print(type);
-        switch (type) {
-          case 'customer':
-            if (tableData.isEmpty) {
-              break;
-              return;
-            }
-            await Provider.of<Orders>(context, listen: false)
-                .fetchAndSetTableOrder();
-            break;
-          case 'staff':
-            if (accountType == null ||
-                accountType == "" ||
-                accountType == 'Customer') {
-              break;
-              return;
-            }
-            await Provider.of<Orders>(context, listen: false)
-                .fetchAndSetActiveOrders();
-            break;
-          default:
-            break;
-        }
-      }
-    } catch (error) {
-      print('Handle notifications error');
-      print(error);
-      // showErrorDialog(error.toString(), context);
     }
   }
 
@@ -120,35 +77,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
       _isLoading = true;
     });
     await Provider.of<User>(context, listen: false).tryAutoLogin();
-    await subscribeToEvent();
     setState(() {
       _isLoading = false;
     });
+    await subscribeToEvent();
   }
 
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
       await _onLoad();
-    });
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) {
-        print(message.notification?.title);
-      }
-    });
-
-    //TODO : send this with order
-    // _fmToken = await FirebaseMessaging.instance.getToken();
-
-    // While app on the foreground
-    FirebaseMessaging.onMessage.listen((message) async {
-      await handleNotifications(message);
-    });
-
-    // App in the background and opened when tap
-    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-      print("on message received");
-      await handleNotifications(message);
     });
   }
 
