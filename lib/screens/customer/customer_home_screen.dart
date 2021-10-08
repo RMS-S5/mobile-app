@@ -32,6 +32,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
   final globalCustomerScaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> _refreshItems(BuildContext context) async {
+    print("refresh item works");
     try {
       await Provider.of<FoodItems>(context, listen: false)
           .fetchAndSetFoodItems();

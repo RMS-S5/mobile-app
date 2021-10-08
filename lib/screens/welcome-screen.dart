@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/user.dart';
 import '../config/constants.dart';
 import './customer/customer_home_screen.dart';
 import './auth/auth-screen.dart';
@@ -95,7 +97,8 @@ class WelcomeScreen extends StatelessWidget {
                       style: titleTextStyle1.copyWith(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      await Provider.of<User>(context, listen: false).logout();
                       Navigator.of(context)
                           .pushNamed(CustomerHomePageScreen.routeName);
                     },

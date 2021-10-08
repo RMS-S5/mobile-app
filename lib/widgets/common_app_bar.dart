@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 
-import '../screens/notifications_screen.dart';
 import '../providers/notifications.dart';
 
 import '../../config/constants.dart';
 import 'badge.dart';
 
-AppBar staffAppBar(BuildContext context, {String? title}) {
+AppBar commonAppBar(BuildContext context, {String? title}) {
   return AppBar(
     backgroundColor: Colors.white,
     iconTheme: IconThemeData(color: kTextColor),
@@ -46,20 +45,5 @@ AppBar staffAppBar(BuildContext context, {String? title}) {
           ),
       ],
     ),
-    actions: <Widget>[
-      Consumer<Notifications>(
-        builder: (_, notificationData, ch) => Badge(
-          key: UniqueKey(),
-          child: ch,
-          value: notificationData.notificationCount.toString(),
-        ),
-        child: IconButton(
-          icon: Icon(Icons.notifications),
-          onPressed: () {
-            Navigator.of(context).pushNamed(NotificationScreen.routeName);
-          },
-        ),
-      ),
-    ],
   );
 }

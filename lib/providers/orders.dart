@@ -13,12 +13,13 @@ class Orders with ChangeNotifier {
 
   String _token;
   String? _userId;
+  String? _fcmToken;
   String _verificationCode = "";
   Map<String, dynamic> _tableData = {};
   List<dynamic> _branchTables = [];
 
   Orders(this._token, this._userId, this._activeOrders, this._tableOrder,
-      this._waiterServedOrders) {}
+      this._waiterServedOrders, this._fcmToken) {}
 
   //Getters
   Map<String, dynamic> get tableData {
@@ -78,6 +79,15 @@ class Orders with ChangeNotifier {
     return _activeOrders.firstWhere((order) => order["orderId"] == orderId);
   }
 
+  String? get fcmToken {
+    return _fcmToken;
+  }
+
+  void setFCMToken(String? token) {
+    _fcmToken = token;
+    notifyListeners();
+  }
+
   // Updates
   Future<void> addOrder(dynamic orderData) async {
     try {
@@ -89,8 +99,9 @@ class Orders with ChangeNotifier {
         'cartItems': json.encode(orderData['cartItems']),
         'tableNumber': _tableData['tableNumber'],
         'branchId': _tableData['branchId'],
+        'fcmToken': _fcmToken
       };
-      final reponse = await API.orderAPI.addOrder(data, token: _token);
+      final response = await API.orderAPI.addOrder(data, token: _token);
 
       notifyListeners();
     } catch (error) {
@@ -125,6 +136,9 @@ class Orders with ChangeNotifier {
   // Fetching data
   Future<void> fetchAndSetTableData() async {
     try {
+      if (!_tableData.isEmpty) {
+        return;
+      }
       if (_verificationCode == null || _verificationCode == "") {
         final prefs = await SharedPreferences.getInstance();
         if (!prefs.containsKey('tableData')) {

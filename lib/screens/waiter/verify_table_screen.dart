@@ -155,7 +155,7 @@ class _VerifyTableScreenState extends State<VerifyTableScreen> {
                             ),
                           ),
                           child: Text(
-                            'Submit',
+                            'Generate',
                             style: titleTextStyle1.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
