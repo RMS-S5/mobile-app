@@ -30,8 +30,14 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
   var activeCategory = "0";
   var searchKey = "";
   final globalCustomerScaffoldKey = GlobalKey<ScaffoldState>();
+  bool firstTime = true;
+  TextEditingController searchController = TextEditingController();
 
-  Future<void> _refreshItems(BuildContext context) async {
+  Future<void> _refreshItems(BuildContext context, refresh) async {
+    print(firstTime);
+    if (!firstTime && !refresh) {
+      return;
+    }
     print("refresh item works");
     try {
       await Provider.of<FoodItems>(context, listen: false)
@@ -44,6 +50,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
       }
       await Provider.of<Cart>(context, listen: false)
           .fetchAndSetCartItemsData();
+      firstTime = false;
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
@@ -74,17 +81,19 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
       drawer: CustomerAppDrawer(drawerItemName: DrawerItems.HOME),
       body: Column(
         children: [
-          SearchBox(onChanged: searchBarOnChange),
+          SearchBox(
+            onChanged: searchBarOnChange,
+          ),
           Expanded(
             child: FutureBuilder(
-                future: _refreshItems(context),
+                future: _refreshItems(context, false),
                 builder: (ctx, snapshot) => snapshot.connectionState ==
                         ConnectionState.waiting
                     ? Center(
                         child: CircularProgressIndicator(),
                       )
                     : RefreshIndicator(
-                        onRefresh: () => _refreshItems(context),
+                        onRefresh: () => _refreshItems(context, true),
                         child: Container(
                           height: size.height,
                           child: Column(
