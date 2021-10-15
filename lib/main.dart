@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:rms_mobile_app/widgets/notification_wrapper.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import './widgets/notification_wrapper.dart';
 import './services/local_notification_service.dart';
 import './config/constants.dart';
 
@@ -33,6 +34,7 @@ import 'screens/customer/customer_home_screen.dart';
 import 'screens/customer/food_item_screen.dart';
 import 'screens/customer/cart_screen.dart';
 import 'screens/customer/order_screen.dart';
+import 'screens/customer/table_orders_screen.dart';
 import 'screens/customer/table_verification_screen.dart';
 import 'screens/customer/qr_scanner.dart';
 
@@ -66,6 +68,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocalNotificationService.initialize();
   await Firebase.initializeApp();
+  await dotenv.load(fileName: ".env");
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(MyApp());
@@ -106,7 +109,7 @@ class MyApp extends StatelessWidget {
                 user.token ?? '',
                 user.userData['userId'] ?? '',
                 previousOrders != null ? previousOrders.activeOrders : [],
-                previousOrders != null ? previousOrders.tableOrder : {},
+                previousOrders != null ? previousOrders.tableOrders : [],
                 previousOrders != null ? previousOrders.waiterServedOrders : [],
                 previousOrders != null ? previousOrders.fcmToken : null)),
       ],
@@ -135,7 +138,9 @@ class MyApp extends StatelessWidget {
               CustomerFoodItemScreen.routeName: (ctx) =>
                   CustomerFoodItemScreen(),
               CustomerCartScreen.routeName: (ctx) => CustomerCartScreen(),
-              CustomerOrderScreen.routeName: (ctx) => CustomerOrderScreen(),
+              CustomerTableOrders.routeName: (ctx) => CustomerTableOrders(),
+              CustomerOrderViewScreen.routeName: (ctx) =>
+                  CustomerOrderViewScreen(),
               TableVerificationScreen.routeName: (ctx) =>
                   TableVerificationScreen(),
               KitchenStaffPendingOrdersScreen.routeName: (ctx) =>

@@ -28,6 +28,16 @@ class OrderAPI {
     }
   }
 
+  Future<dynamic> updateOrdersStatus(orderData, {String? token}) async {
+    try {
+      var response = await _conn.put("/api/order/orders-status",
+          body: orderData, token: token);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Get requests
 
   Future<dynamic> getActiveOrders(
@@ -41,14 +51,12 @@ class OrderAPI {
     }
   }
 
-  Future<dynamic> getTableOrder(
-    String verificationCode, {
+  Future<dynamic> getTableOrders({
     Map<String, dynamic>? query,
     String? token,
   }) async {
     try {
-      var response =
-          await _conn.get("/api/order/table-order", query: query, token: token);
+      var response = await _conn.get("/api/order/table-orders", query: query);
       return response;
     } catch (error) {
       throw error;

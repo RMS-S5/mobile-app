@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert' as convert;
 import '../models/http_exception.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class APIConn {
   static final APIConn _instance = APIConn._internal();
@@ -16,8 +17,7 @@ class APIConn {
     _dio.options.receiveTimeout = 3000;
   }
 
-  final _baseUrl = Uri.parse("http://192.168.8.101:8000");
-  // final _baseUrl = Uri.parse("https://rms-backend-cs3202.herokuapp.com");
+  final _baseUrl = Uri.parse(dotenv.env['BACKEND_URL'] ?? "");
 
   String? _token;
   String? _refreshToken;

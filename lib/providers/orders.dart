@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
-import 'package:rms_mobile_app/models/http_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async';
 
 import '../api/api.dart';
+import '../models/validate_exception.dart';
+import '../models/http_exception.dart';
 
 class Orders with ChangeNotifier {
   List<dynamic> _activeOrders = [];
-  Map<String, dynamic> _tableOrder = {};
+  List<dynamic> _tableOrders = [];
   List<dynamic> _waiterServedOrders = [];
 
   String _token;
@@ -18,7 +19,7 @@ class Orders with ChangeNotifier {
   Map<String, dynamic> _tableData = {};
   List<dynamic> _branchTables = [];
 
-  Orders(this._token, this._userId, this._activeOrders, this._tableOrder,
+  Orders(this._token, this._userId, this._activeOrders, this._tableOrders,
       this._waiterServedOrders, this._fcmToken) {}
 
   //Getters
@@ -38,12 +39,19 @@ class Orders with ChangeNotifier {
     return [..._waiterServedOrders];
   }
 
-  Map<String, dynamic> get tableOrder {
-    return {..._tableOrder};
+  List<dynamic> get tableOrders {
+    return [..._tableOrders];
   }
 
   double get tableTotalAmount {
-    return _tableOrder['totalAmount'] as double;
+    var total = 0.0;
+    _tableOrders.forEach((order) {
+      if (order['orderStatus'] != "Rejected" &&
+          order['orderStatus'] != "Paid" &&
+          order['orderStatus'] != "Closed")
+        total += double.parse(order["totalAmount"]);
+    });
+    return total;
   }
 
   int get activeOrderCount {
@@ -77,6 +85,11 @@ class Orders with ChangeNotifier {
   // Get Order by Order Id
   Map getOrdersByOrderId(orderId) {
     return _activeOrders.firstWhere((order) => order["orderId"] == orderId);
+  }
+
+  // Get Order by Order Id
+  Map getTableOrdersByOrderId(orderId) {
+    return _tableOrders.firstWhere((order) => order["orderId"] == orderId);
   }
 
   String? get fcmToken {
@@ -123,13 +136,53 @@ class Orders with ChangeNotifier {
     }
   }
 
+  // By customer to pay multiple orders
+  Future<void> payOrders() async {
+    try {
+      var orderIds = [];
+
+      _tableOrders.forEach((order) {
+        if (order['orderStatus'] != 'Rejected' &&
+            order['orderStatus'] != 'Paid' &&
+            order['orderStatus'] != 'Closed') {
+          orderIds.add(order['orderId']);
+        }
+      });
+      final response = await API.orderAPI.updateOrdersStatus(
+          {"orderStatus": "Paid", "orderIds": json.encode(orderIds)});
+      await fetchAndSetTableOrder();
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Set verification code
   Future<void> setVerificationCode(String verificationCode) async {
     _verificationCode = verificationCode;
     try {
-      await fetchAndSetTableData();
+      await fetchAndSetNewTableData();
     } catch (error) {
       throw error;
+    }
+  }
+
+  Future<void> fetchAndSetNewTableData() async {
+    try {
+      final response =
+          await API.branchAPI.getTableDataByVerificationCode(_verificationCode);
+      _tableData = response['data'];
+      notifyListeners();
+      final tableData = json.encode({
+        'tableNumber': _tableData['tableNumber'],
+        'branchId': _tableData['branchId'],
+        'branchName': _tableData['branchName'],
+        'verficationCode': _tableData['verificationCode']
+      });
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('tableData', tableData);
+    } catch (error) {
+      throw HttpException(error.toString());
     }
   }
 
@@ -150,23 +203,9 @@ class Orders with ChangeNotifier {
         _verificationCode = extractedTableData['verificationCode'] ?? "";
         return;
       }
-
-      final response =
-          await API.branchAPI.getTableDataByVerificationCode(_verificationCode);
-
-      _tableData = response['data'];
-      notifyListeners();
-      final tableData = json.encode({
-        'tableNumber': _tableData['tableNumber'],
-        'branchId': _tableData['branchId'],
-        'branchName': _tableData['branchName'],
-        'verficationCode': _tableData['verificationCode']
-      });
-
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('tableData', tableData);
+      await fetchAndSetNewTableData();
     } catch (error) {
-      throw HttpException(error.toString());
+      throw error;
     }
   }
 
@@ -192,13 +231,13 @@ class Orders with ChangeNotifier {
         await fetchAndSetTableData();
       }
 
-      final response = await API.orderAPI.getTableOrder(_verificationCode,
-          query: {
-            'branchId': _tableData['branchId'],
-            'tableNumber': _tableData['tableNumber']
-          },
-          token: _token);
-      _tableOrder = response?['data'] ?? {};
+      final response = await API.orderAPI.getTableOrders(
+        query: {
+          'branchId': _tableData['branchId'],
+          'tableNumber': _tableData['tableNumber']
+        },
+      );
+      _tableOrders = response?['data'] ?? [];
       notifyListeners();
     } catch (error) {
       throw error;

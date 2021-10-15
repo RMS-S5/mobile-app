@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rms_mobile_app/screens/profile-screen.dart';
 
-import '../../screens/kitchen/pending_orders_screen.dart';
 import '../../screens/customer/cart_screen.dart';
 import '../../screens/customer/customer_home_screen.dart';
-import '../../screens/customer/order_screen.dart';
+import '../../screens/customer/table_orders_screen.dart';
 import '../../screens/customer/table_verification_screen.dart';
 import '../../screens/profile-screen.dart';
 
@@ -92,7 +91,7 @@ class _CustomerAppDrawerState extends State<CustomerAppDrawer> {
                 ontapFunction: () {
                   setSelectedScreen(DrawerItems.ORDER);
                   Navigator.of(context)
-                      .pushReplacementNamed(CustomerOrderScreen.routeName);
+                      .pushReplacementNamed(CustomerTableOrders.routeName);
                 },
               ),
               Divider(),
