@@ -41,6 +41,7 @@ class _AuthCardState extends State<AuthCard> {
   bool _showPassword = false;
   var _isLoading = false;
   final _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
@@ -185,6 +186,7 @@ class _AuthCardState extends State<AuthCard> {
                         ),
                       TextFormField(
                         style: inputTextStyle,
+                        controller: _emailController,
                         decoration: InputDecoration(
                           labelText: 'E-Mail',
                         ),
@@ -232,7 +234,55 @@ class _AuthCardState extends State<AuthCard> {
                                   color: kSuccessButtonColor,
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                if (_emailController.text == "") {
+                                  return;
+                                }
+
+                                final dialog = AlertDialog(
+                                  title: Text(
+                                    'Forgot password?',
+                                    style:
+                                        TextStyle(color: kSuccessButtonColor),
+                                  ),
+                                  content: Text(
+                                      "Send password reset link to your email!"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('Okay',
+                                          style:
+                                              TextStyle(color: kPrimaryColor)),
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                        try {
+                                          await Provider.of<User>(context,
+                                                  listen: false)
+                                              .forgotPassword(
+                                                  _emailController.text);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Password reset link sent to your email address.")));
+                                        } catch (error) {
+                                          var message;
+                                          if (error.toString() ==
+                                              "Request is invalid") {
+                                            message =
+                                                "Please enter valid email!";
+                                          } else {
+                                            message = error.toString();
+                                          }
+                                          print(error);
+                                          showErrorDialog(message, context);
+                                        }
+                                      },
+                                    )
+                                  ],
+                                );
+
+                                showDialog(
+                                    context: context, builder: (ctx) => dialog);
+                              },
                             ),
                           ],
                         ),

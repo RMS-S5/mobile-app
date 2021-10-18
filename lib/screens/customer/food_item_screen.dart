@@ -49,13 +49,15 @@ class _CustomerFoodItemScreenState extends State<CustomerFoodItemScreen> {
                   ? media.size.height * 0.4
                   : media.size.height * 0.6,
               width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    loadedFoodItem['imageUrl'],
-                  ),
-                  fit: BoxFit.cover,
-                ),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                      child: FadeInImage.assetNetwork(
+                    placeholder: foodItemFadeImageUrl,
+                    image: loadedFoodItem['imageUrl'],
+                    fit: BoxFit.cover,
+                  ))
+                ],
               ),
             ),
             FoodItemDetails(

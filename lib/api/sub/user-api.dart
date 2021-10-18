@@ -46,4 +46,14 @@ class UserAPI {
       throw error;
     }
   }
+
+  Future<Map<String, dynamic>> resetPassword(String email) async {
+    try {
+      var response = await _conn
+          .put("api/user/request-reset-password", body: {"email": email});
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

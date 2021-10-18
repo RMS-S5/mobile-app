@@ -117,7 +117,7 @@ class MyApp extends StatelessWidget {
         return NotificationWrapper(
           MaterialApp(
             navigatorKey: navigatorKey,
-            title: 'RMS',
+            title: 'NPNFood',
             theme: ThemeData(
               fontFamily: fontFamily,
               primaryColor: kPrimaryColor,

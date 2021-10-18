@@ -153,10 +153,10 @@ class User with ChangeNotifier {
     }
   }
 
-  // TODO: Change user password
   Future<void> forgotPassword(String email) async {
+    print(email);
     try {
-      // final response = await API.userAPI.forgotPassword(email);
+      final response = await API.userAPI.resetPassword(email);
     } catch (error) {
       throw error;
     }
