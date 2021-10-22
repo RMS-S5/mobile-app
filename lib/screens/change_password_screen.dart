@@ -73,7 +73,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       setState(() {
         _isLoading = false;
       });
-      const message = "Something went wrong.";
+      const message = "Something went wrong! Check your internet connection.";
       showErrorDialog(message, context);
     }
   }

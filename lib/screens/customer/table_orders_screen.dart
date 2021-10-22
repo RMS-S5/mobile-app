@@ -26,7 +26,8 @@ class CustomerTableOrders extends StatelessWidget {
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
-      final errorMessage = 'Something went wrong.';
+      final errorMessage =
+          "Something went wrong! Check your internet connection.";
       showErrorDialog(errorMessage, context);
     }
   }

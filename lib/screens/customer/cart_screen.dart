@@ -34,6 +34,12 @@ class _CustomerCartScreenState extends State<CustomerCartScreen> {
         setState(() {
           _isLoading = false;
         });
+      }).onError((error, stackTrace) {
+        setState(() {
+          _isLoading = false;
+        });
+        showErrorDialog(
+            "Something went wrong! Check your internet connection.", context);
       });
     }
     _isInit = false;

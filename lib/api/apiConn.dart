@@ -65,10 +65,11 @@ class APIConn {
       print("API Conn error");
       print(e.response?.data);
       if (e.response != null) {
-        throw HttpException(
-            e.response?.data['message'] ?? "Something went wrong!");
+        throw HttpException(e.response?.data['message'] ??
+            "Something went wrong! Check your internet connection.");
       } else {
-        throw HttpException("Something went wrong!");
+        throw HttpException(
+            "Something went wrong! Check your internet connection.");
       }
     } catch (error) {
       print('get error');
@@ -97,10 +98,11 @@ class APIConn {
       print("API Conn error");
       print(e.response?.data);
       if (e.response != null) {
-        throw HttpException(
-            e.response?.data['message'] ?? "Something went wrong!");
+        throw HttpException(e.response?.data['message'] ??
+            "Something went wrong! Check your internet connection.");
       } else {
-        throw HttpException("Something went wrong!");
+        throw HttpException(
+            "Something went wrong! Check your internet connection.");
       }
     } catch (error) {
       throw error;
@@ -128,10 +130,11 @@ class APIConn {
       print("API Conn error");
       print(e.response?.data);
       if (e.response != null) {
-        throw HttpException(
-            e.response?.data['message'] ?? "Something went wrong!");
+        throw HttpException(e.response?.data['message'] ??
+            "Something went wrong! Check your internet connection.");
       } else {
-        throw HttpException("Something went wrong!");
+        throw HttpException(
+            "Something went wrong! Check your internet connection.");
       }
     } catch (error) {
       throw error;
@@ -156,10 +159,11 @@ class APIConn {
       return json;
     } on DioError catch (e) {
       if (e.response != null) {
-        throw HttpException(
-            e.response?.data['message'] ?? "Something went wrong!");
+        throw HttpException(e.response?.data['message'] ??
+            "Something went wrong! Check your internet connection.");
       } else {
-        throw HttpException("Something went wrong!");
+        throw HttpException(
+            "Something went wrong! Check your internet connection.");
       }
     } catch (error) {
       throw error;
