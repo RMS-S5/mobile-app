@@ -12,12 +12,12 @@ import './config/constants.dart';
 /**
  * Providers imports
  */
-import './providers/categories.dart';
-import './providers/food_items.dart';
-import './providers/cart.dart';
-import './providers/orders.dart';
-import './providers/notifications.dart';
-import './providers/user.dart';
+import 'package:rms_mobile_app/providers/categories.dart';
+import 'package:rms_mobile_app/providers/food_items.dart';
+import 'package:rms_mobile_app/providers/cart.dart';
+import 'package:rms_mobile_app/providers/orders.dart';
+import 'package:rms_mobile_app/providers/notifications.dart';
+import 'package:rms_mobile_app/providers/user.dart';
 
 /**
  * Route imports
