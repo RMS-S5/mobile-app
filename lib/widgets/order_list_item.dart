@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../config/constants.dart';
 
@@ -17,10 +19,15 @@ class OrderListItem extends StatelessWidget {
       required this.tableNumber,
       required this.placedTime,
       required this.cartItems,
-      required this.orderViewRouteName});
+      required this.orderViewRouteName}) {
+    tz.initializeTimeZones();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final tm = DateTime.parse(placedTime);
+    final colombo = tz.getLocation('Asia/Colombo');
+    var colomboTime = tz.TZDateTime.from(tm, colombo);
     return Card(
       margin: EdgeInsets.symmetric(
         horizontal: 15,
@@ -37,7 +44,7 @@ class OrderListItem extends StatelessWidget {
           style: titleTextStyle1,
         ),
         subtitle: Text(
-          'Placed Time : ${DateFormat.jm().format(DateTime.parse(placedTime))}',
+          'Placed Time : ${DateFormat.jm().format(colomboTime)}',
           style: descriptionStyle1,
         ),
         trailing: FittedBox(
