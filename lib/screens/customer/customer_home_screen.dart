@@ -38,6 +38,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
     if (!firstTime && !refresh) {
       return;
     }
+    firstTime = false;
     print("refresh item works");
     try {
       await Provider.of<FoodItems>(context, listen: false)
@@ -50,11 +51,12 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
       }
       await Provider.of<Cart>(context, listen: false)
           .fetchAndSetCartItemsData();
-      firstTime = false;
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
-      final errorMessage = 'Something went wrong.';
+      print(error);
+      final errorMessage =
+          "Something went wrong! Check your internet connection.";
       showErrorDialog(errorMessage, context);
     }
   }

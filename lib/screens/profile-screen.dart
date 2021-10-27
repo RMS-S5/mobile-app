@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         _isLoading = false;
       });
-      const message = "Something went wrong.";
+      const message = "Something went wrong! Check your internet connection.";
       showErrorDialog(message, context);
     }
   }

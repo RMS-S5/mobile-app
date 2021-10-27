@@ -44,7 +44,7 @@ class _QRScannerState extends State<QRScanner> {
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
-      const message = "Something went wrong.";
+      const message = "Something went wrong! Check your internet connection.";
       showErrorDialog(message, context);
     }
   }
