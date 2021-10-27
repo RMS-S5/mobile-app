@@ -192,17 +192,17 @@ class Orders with ChangeNotifier {
       if (!_tableData.isEmpty) {
         return;
       }
-      if (_verificationCode == null || _verificationCode == "") {
-        final prefs = await SharedPreferences.getInstance();
-        if (!prefs.containsKey('tableData')) {
-          throw HttpException("Verification code not found!");
-        }
-        final extractedTableData = json
-            .decode(prefs.getString('tableData') ?? "") as Map<String, dynamic>;
-        _tableData = extractedTableData;
-        _verificationCode = extractedTableData['verificationCode'] ?? "";
-        return;
+
+      final prefs = await SharedPreferences.getInstance();
+      if (!prefs.containsKey('tableData')) {
+        throw HttpException("Verification code not found!");
       }
+      final extractedTableData = json.decode(prefs.getString('tableData') ?? "")
+          as Map<String, dynamic>;
+      _tableData = extractedTableData;
+      _verificationCode = extractedTableData['verificationCode'] ?? "";
+      return;
+
       await fetchAndSetNewTableData();
     } catch (error) {
       throw error;

@@ -13,8 +13,8 @@ class APIConn {
   }
 
   APIConn._internal() {
-    _dio.options.connectTimeout = 5000;
-    _dio.options.receiveTimeout = 3000;
+    _dio.options.connectTimeout = 8000;
+    _dio.options.receiveTimeout = 4000;
   }
 
   final _baseUrl = Uri.parse(dotenv.env['BACKEND_URL'] ?? "");

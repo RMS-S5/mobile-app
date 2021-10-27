@@ -54,6 +54,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {
+      print(error);
       final errorMessage =
           "Something went wrong! Check your internet connection.";
       showErrorDialog(errorMessage, context);
