@@ -50,6 +50,13 @@ class _CustomerCartScreenState extends State<CustomerCartScreen> {
     try {
       await Provider.of<Orders>(context, listen: false).addOrder(orderData);
       Provider.of<Cart>(context, listen: false).clear();
+      final snackBar = SnackBar(
+        content: const Text('Order added successfully'),
+        duration: Duration(
+          milliseconds: 2000,
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } on HttpException catch (error) {
       showErrorDialog(error.toString(), context);
     } catch (error) {

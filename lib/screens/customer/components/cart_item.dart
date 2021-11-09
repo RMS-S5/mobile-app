@@ -96,7 +96,7 @@ class CartItem extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             backgroundImage: Image.network(
-              imageUrl ?? imageNotFoundImageUrl,
+              imageUrl == null ? imageNotFoundImageUrl : getAWSImages(imageUrl),
               fit: BoxFit.fill,
             ).image,
           ),

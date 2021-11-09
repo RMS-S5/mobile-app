@@ -54,7 +54,7 @@ class _CustomerFoodItemScreenState extends State<CustomerFoodItemScreen> {
                   Positioned.fill(
                       child: FadeInImage.assetNetwork(
                     placeholder: foodItemFadeImageUrl,
-                    image: loadedFoodItem['imageUrl'],
+                    image: getAWSImages(loadedFoodItem['imageUrl']),
                     fit: BoxFit.cover,
                   ))
                 ],

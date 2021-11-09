@@ -14,7 +14,8 @@ void main() {
       final loginScreenButton = find.byType(ElevatedButton).first;
       await tester.tap(loginScreenButton);
       await tester.pumpAndSettle();
-
+      // final usernameTextField = find.byType(TextFormField).first;
+      // final passwordField = find.byType(TextFormField).last;
       // tester.enterText(finder, text);
     });
   });

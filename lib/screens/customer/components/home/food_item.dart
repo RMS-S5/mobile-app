@@ -32,7 +32,7 @@ class FoodItemCard extends StatelessWidget {
               },
               child: FadeInImage.assetNetwork(
                 placeholder: foodItemFadeImageUrl,
-                image: imageUrl,
+                image: getAWSImages(imageUrl),
                 fit: BoxFit.cover,
               )
               // child: Image.network(

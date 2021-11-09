@@ -86,7 +86,7 @@ class _CustomerAppDrawerState extends State<CustomerAppDrawer> {
               DrawerItem(
                 selectedDrawerItem: selectedDrawerItem,
                 drawerItemName: DrawerItems.ORDER,
-                label: "Order",
+                label: "Orders",
                 leadingIcon: Icons.food_bank,
                 ontapFunction: () {
                   setSelectedScreen(DrawerItems.ORDER);

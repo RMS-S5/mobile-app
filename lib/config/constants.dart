@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Brakpoints
 
 // Global constraints
 final String fontFamily = 'Open Sans';
+final String? fileAPI = "${dotenv.env['BACKEND_URL']}/file/";
 
 // colour constants
 final Color kPrimaryColor = Color(0xFFFFC61F);
@@ -70,6 +72,11 @@ final welcomeBackGroudImagePath = "assets/images/welcome-3.png";
 final foodItemFadeImageUrl = "assets/images/food-item-fade.jpg";
 final imageNotFoundImageUrl =
     "https://bitsofco.de/content/images/2018/12/Screenshot-2018-12-16-at-21.06.29.png";
+
+String getAWSImages(imageUrl) {
+  final String? fileAPI = "https://rms-backend-cs3202.herokuapp.com/file/";
+  return "${fileAPI}${imageUrl}";
+}
 
 // OrderTypes
 const kOrderStatusTypes = {
