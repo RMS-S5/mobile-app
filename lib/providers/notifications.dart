@@ -7,21 +7,19 @@ class Notifications with ChangeNotifier {
   List _notifications = [];
   String _token;
 
-  Notifications(this._token, this._notifications) {
-    // messaging = FirebaseMessaging.instance;
-    // FirebaseMessaging.onMessage.listen((message) async {
+  Notifications(this._token, this._notifications) {}
 
-    // })
-  }
-
+  // Get all notifications
   List get notifications {
     return [..._notifications];
   }
 
+  // Return notification count
   int get notificationCount {
     return _notifications.length;
   }
 
+  // Add notification from Firebase Cloud message
   void addNotifications(RemoteMessage message) {
     final uuid = Uuid();
     final msg = {
@@ -33,11 +31,13 @@ class Notifications with ChangeNotifier {
     notifyListeners();
   }
 
+  // Remove gven notification
   void removeNotification(messageId) {
     _notifications.removeWhere((item) => item['id'] == messageId);
     notifyListeners();
   }
 
+  // Clear all notifications
   void clearNotifications() {
     _notifications = [];
     notifyListeners();

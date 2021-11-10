@@ -9,6 +9,7 @@ import '../../screens/customer/table_verification_screen.dart';
 import '../../screens/profile-screen.dart';
 
 import '../../providers/user.dart';
+import '../../providers/notifications.dart';
 
 import './drawer_header.dart';
 import '../../config/constants.dart';
@@ -134,6 +135,8 @@ class _CustomerAppDrawerState extends State<CustomerAppDrawer> {
                             setSelectedScreen(DrawerItems.LOGOUT);
                             Navigator.of(context).pop();
                             Navigator.of(context).pushReplacementNamed('/');
+                            Provider.of<Notifications>(context, listen: false)
+                                .clearNotifications();
                             Provider.of<User>(context, listen: false).logout();
                           },
                         ),

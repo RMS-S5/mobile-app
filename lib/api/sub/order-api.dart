@@ -4,7 +4,7 @@ class OrderAPI {
   static final _conn = APIConn();
 
   // Post requests
-
+  // Add order
   Future<dynamic> addOrder(dynamic orderData, {String? token}) async {
     try {
       var response = await _conn.post("/api/order/add-order",
@@ -16,7 +16,7 @@ class OrderAPI {
   }
 
   // Update Request
-
+  // Update order - order data (..)
   Future<dynamic> updateOrder(String orderId, dynamic orderData,
       {String? token}) async {
     try {
@@ -28,6 +28,7 @@ class OrderAPI {
     }
   }
 
+  // Update order status -> staff
   Future<dynamic> updateOrdersStatus(orderData, {String? token}) async {
     try {
       var response = await _conn.put("/api/order/orders-status",
@@ -39,7 +40,7 @@ class OrderAPI {
   }
 
   // Get requests
-
+// Get active orders -> staff
   Future<dynamic> getActiveOrders(
       {String? token, Map<String, dynamic>? query}) async {
     try {
@@ -51,6 +52,7 @@ class OrderAPI {
     }
   }
 
+  // Get table orders -> Customer, guest user
   Future<dynamic> getTableOrders({
     Map<String, dynamic>? query,
     String? token,

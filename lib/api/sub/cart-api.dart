@@ -4,6 +4,7 @@ class CartAPI {
   static final _conn = APIConn();
 
   // Post
+  // Add cart api
   Future<dynamic> addCart({String? token}) async {
     try {
       var response = await _conn.post("/api/cart/add-cart", token: token);
@@ -13,6 +14,7 @@ class CartAPI {
     }
   }
 
+// Add cart item api
   Future<dynamic> addCartItem(dynamic cartItemData, {String? token}) async {
     try {
       var response = await _conn.post("/api/cart/add-cart-item",
@@ -23,9 +25,8 @@ class CartAPI {
     }
   }
 
-  /**
-   * Getters
-   */
+  // Getters
+  // Get cart data by cart id
   Future<dynamic> getCartDataByCartId(String cartId) async {
     try {
       var response = await _conn.get("/api/cart/cart-data/$cartId");
@@ -35,6 +36,7 @@ class CartAPI {
     }
   }
 
+  // Get cart belongs to customer
   Future<dynamic> getCustomerCart(String customerId, {String? token}) async {
     try {
       var response =
@@ -45,6 +47,7 @@ class CartAPI {
     }
   }
 
+  // Get cart items for given cart
   Future<dynamic> getCartItems(String cartId) async {
     try {
       var response = await _conn.get("/api/cart/cart-items/$cartId");
@@ -54,7 +57,7 @@ class CartAPI {
     }
   }
 
-  // Remove
+  // Remove cart item
   Future<dynamic> removeCartItems(String cartIemId, {String? token}) async {
     try {
       var response =

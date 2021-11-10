@@ -73,6 +73,7 @@ final foodItemFadeImageUrl = "assets/images/food-item-fade.jpg";
 final imageNotFoundImageUrl =
     "https://bitsofco.de/content/images/2018/12/Screenshot-2018-12-16-at-21.06.29.png";
 
+// Get aws image form back end
 String getAWSImages(imageUrl) {
   final String? fileAPI = "https://rms-backend-cs3202.herokuapp.com/file/";
   return "${fileAPI}${imageUrl}";

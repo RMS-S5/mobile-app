@@ -13,17 +13,12 @@ class FoodItems with ChangeNotifier {
     this._foodItems = previousFoodItemData;
   }
 
-  // void update(token, previousFoodItemData) {
-  //   _token = token;
-  //   if (previousFoodItemData != []) {
-  //     this._foodItems = previousFoodItemData;
-  //   }
-  // }
-
+  // Return all the food items
   List get foodItems {
     return [..._foodItems];
   }
 
+  // Get food items only by category filter
   List getFoodItemByCategory(String categoryId) {
     if (categoryId == '0') {
       return [..._foodItems];
@@ -34,6 +29,7 @@ class FoodItems with ChangeNotifier {
     }
   }
 
+  // Get food items filter by category and search keyword
   List getFoodItemByCategoryAndSearch(String categoryId, String searchKey) {
     var _viewFoodItems = [];
     if (categoryId == '0') {
@@ -53,14 +49,13 @@ class FoodItems with ChangeNotifier {
     }
   }
 
+  // Find food item by food item id
   Map findById(String foodItemId) {
     return _foodItems
         .firstWhere((foodItem) => foodItem['foodItemId'] == foodItemId);
   }
 
-  // TODO: Implement add product logic
-  void addFoodItem() {}
-
+  // Fetch and set all food items
   Future<void> fetchAndSetFoodItems() async {
     try {
       final response = await API.foodItemAPI.getAllFoodItems();

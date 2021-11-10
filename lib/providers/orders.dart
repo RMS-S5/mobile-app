@@ -75,6 +75,7 @@ class Orders with ChangeNotifier {
         .toList();
   }
 
+  // Get order by status but only relevant waiter's orders
   List getOrdersByStatusWaiter(orderStatus) {
     return _activeOrders
         .where((order) =>
@@ -87,7 +88,7 @@ class Orders with ChangeNotifier {
     return _activeOrders.firstWhere((order) => order["orderId"] == orderId);
   }
 
-  // Get Order by Order Id
+  // Get Table Order by Order Id
   Map getTableOrdersByOrderId(orderId) {
     return _tableOrders.firstWhere((order) => order["orderId"] == orderId);
   }
@@ -96,12 +97,13 @@ class Orders with ChangeNotifier {
     return _fcmToken;
   }
 
+  // Set fcm token
   void setFCMToken(String? token) {
     _fcmToken = token;
     notifyListeners();
   }
 
-  // Updates
+  // Add order
   Future<void> addOrder(dynamic orderData) async {
     try {
       if (_tableData.isEmpty) {
@@ -122,7 +124,7 @@ class Orders with ChangeNotifier {
     }
   }
 
-  // Updates
+  // Update order status
   Future<void> updateOrderStatus(orderId, status) async {
     try {
       if (_token == null || _token == "") {
@@ -166,6 +168,7 @@ class Orders with ChangeNotifier {
     }
   }
 
+  // Fetch and set new Table data using verfication code
   Future<void> fetchAndSetNewTableData() async {
     try {
       final response =
@@ -186,7 +189,7 @@ class Orders with ChangeNotifier {
     }
   }
 
-  // Fetching data
+  // Fetching table data using local saved data
   Future<void> fetchAndSetTableData() async {
     try {
       if (!_tableData.isEmpty) {
@@ -209,6 +212,7 @@ class Orders with ChangeNotifier {
     }
   }
 
+  // Fetch and set active orders -> waiter , kitchen staff
   Future<void> fetchAndSetActiveOrders() async {
     try {
       if (_token == null || _token == "") {
@@ -225,6 +229,7 @@ class Orders with ChangeNotifier {
     }
   }
 
+  // Fetch and set table orders -> Customer , Guest User
   Future<void> fetchAndSetTableOrder() async {
     try {
       if (_tableData.isEmpty) {
@@ -244,6 +249,7 @@ class Orders with ChangeNotifier {
     }
   }
 
+  // Fetch and set branch tables -> Waiter
   Future<void> fetchAndSetBranchTables() async {
     try {
       if (_token == null || _token == "") {

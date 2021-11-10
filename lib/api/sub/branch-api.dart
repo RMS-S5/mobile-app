@@ -4,6 +4,7 @@ class BranchAPI {
   static final _conn = APIConn();
 
   // Getters
+  // Get table data by table verfication code -> Customer , Guest User
   Future<dynamic> getTableDataByVerificationCode(String verificationCode,
       {String? token}) async {
     try {
@@ -15,6 +16,7 @@ class BranchAPI {
     }
   }
 
+  // Get branch tables -> Waiter
   Future<dynamic> getBranchTables({
     String? token,
     Map<String, dynamic>? query,

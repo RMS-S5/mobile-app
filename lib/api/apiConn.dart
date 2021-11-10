@@ -33,16 +33,19 @@ class APIConn {
     return headers;
   }
 
+  // Set access token and refresh token
   void setAuthToken(String token, {String? refreshToken}) {
     this._token = token;
     this._refreshToken = refreshToken ?? "";
   }
 
+  // Remove access token and refresh token
   void removeAuthToken() {
     this._token = null;
     this._refreshToken = null;
   }
 
+  // Get request
   Future<Map<String, dynamic>> get(String path,
       {Map<String, dynamic>? query, String? token}) async {
     var url = _baseUrl.replace(path: path);
@@ -78,6 +81,7 @@ class APIConn {
     }
   }
 
+  // Post request
   Future<Map<String, dynamic>> post(String path,
       {dynamic body, String? token}) async {
     var url = _baseUrl.replace(path: path);
@@ -109,6 +113,7 @@ class APIConn {
     }
   }
 
+// Put request -> Update
   Future<Map<String, dynamic>> put(String path,
       {dynamic body, String? token}) async {
     var url = _baseUrl.replace(path: path);
@@ -141,6 +146,7 @@ class APIConn {
     }
   }
 
+  // Delete request
   Future<Map<String, dynamic>> delete(String path, {String? token}) async {
     var url = _baseUrl.replace(path: path);
 

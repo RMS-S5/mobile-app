@@ -52,24 +52,24 @@ class _LoadingScreenState extends State<LoadingScreen> {
       return;
     }
     // If subscribed earlier, unsubscribe them.
-    await FirebaseMessaging.instance
-        .unsubscribeFromTopic('order-kitchen-staff');
-    await FirebaseMessaging.instance.unsubscribeFromTopic('order-customer');
-    await FirebaseMessaging.instance.unsubscribeFromTopic('order-waiter');
+    // await FirebaseMessaging.instance
+    //     .unsubscribeFromTopic('order-kitchen-staff');
+    // await FirebaseMessaging.instance.unsubscribeFromTopic('order-customer');
+    // await FirebaseMessaging.instance.unsubscribeFromTopic('order-waiter');
 
-    switch (accountType) {
-      case 'Kitchen Staff':
-        print('Kitchen topic');
-        await FirebaseMessaging.instance
-            .subscribeToTopic('order-kitchen-staff');
-        break;
-      case 'Waiter':
-        print('Waiter topic');
-        await FirebaseMessaging.instance.subscribeToTopic('order-waiter');
-        break;
-      default:
-        break;
-    }
+    // switch (accountType) {
+    //   case 'Kitchen Staff':
+    //     print('Kitchen topic');
+    //     await FirebaseMessaging.instance
+    //         .subscribeToTopic('order-kitchen-staff');
+    //     break;
+    //   case 'Waiter':
+    //     print('Waiter topic');
+    //     await FirebaseMessaging.instance.subscribeToTopic('order-waiter');
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 
   Future<void> _onLoad() async {

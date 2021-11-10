@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../simple_error_dialog.dart';
 import '../../providers/user.dart';
+import '../../providers/notifications.dart';
 import '../../config/constants.dart';
 import './drawer_item.dart';
 import './drawer_header.dart';
@@ -130,6 +131,8 @@ class _WaiterAppDrawerState extends State<WaiterAppDrawer> {
                 Navigator.of(context).pop();
                 Navigator.of(context)
                     .pushReplacementNamed(WelcomeScreen.routeName);
+                Provider.of<Notifications>(context, listen: false)
+                    .clearNotifications();
                 Provider.of<User>(context, listen: false).logout();
               },
             ),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rms_mobile_app/widgets/simple_error_dialog.dart';
 
 import '../../providers/user.dart';
+import '../../providers/notifications.dart';
 import '../../config/constants.dart';
 import './drawer_item.dart';
 import './drawer_header.dart';
@@ -115,6 +116,8 @@ class _KitchenStaffAppDrawerState extends State<KitchenStaffAppDrawer> {
                 setSelectedScreen(DrawerItems.LOGOUT);
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacementNamed('/');
+                Provider.of<Notifications>(context, listen: false)
+                    .clearNotifications();
                 Provider.of<User>(context, listen: false).logout();
               },
             ),

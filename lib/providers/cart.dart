@@ -63,6 +63,7 @@ class Cart with ChangeNotifier {
     }
   }
 
+  // Fetch and set cart items of cart
   Future<void> fetchAndSetCartItemsData() async {
     try {
       await checkAndSetCart();
@@ -74,6 +75,7 @@ class Cart with ChangeNotifier {
     }
   }
 
+  // Add cart item to cart
   Future<void> addCartItem(String foodItemId, dynamic price, dynamic quantity,
       {String? variantId}) async {
     try {
@@ -116,6 +118,7 @@ class Cart with ChangeNotifier {
     }
   }
 
+  // Remove cart item from cart
   Future<void> removeItem(String cartItemId) async {
     try {
       final response =
@@ -129,6 +132,7 @@ class Cart with ChangeNotifier {
     }
   }
 
+  // Clear the cart
   void clear() {
     _cartItems = [];
     notifyListeners();

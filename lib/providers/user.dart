@@ -35,7 +35,7 @@ class User with ChangeNotifier {
   }
 
   // Functions
-
+  // Check if user is logged in or not
   bool isAuth() {
     if (_expiryDate != null &&
         _expiryDate!.isAfter(DateTime.now()) &&
@@ -50,6 +50,23 @@ class User with ChangeNotifier {
     return false;
   }
 
+  Future<void> subscribeToChannel() async {
+    switch (accountType) {
+      case 'Kitchen Staff':
+        print('Kitchen topic');
+        await FirebaseMessaging.instance
+            .subscribeToTopic('order-kitchen-staff');
+        break;
+      case 'Waiter':
+        print('Waiter topic');
+        await FirebaseMessaging.instance.subscribeToTopic('order-waiter');
+        break;
+      default:
+        break;
+    }
+  }
+
+  // User login -> Save user data to local, subscribe to cloud messaging
   Future<void> login(String email, String password) async {
     try {
       final response = await API.userAPI.login(email, password);
@@ -81,11 +98,15 @@ class User with ChangeNotifier {
       await prefs.setString('userData', localData);
       await prefs.setString('tokenData', tokenData);
       prefs.remove('cartId');
+
+      // Subscribe users to cloud messaging
+      await subscribeToChannel();
     } catch (error) {
       throw error;
     }
   }
 
+  // Register customer
   Future<void> customerRegister(String email, String password, String firstName,
       String lastName, String mobileNumber) async {
     try {
@@ -102,6 +123,7 @@ class User with ChangeNotifier {
     }
   }
 
+  // Update user details
   Future<void> updateUser(Map<String, dynamic> updatedUserData) async {
     try {
       final userData = {
@@ -140,6 +162,7 @@ class User with ChangeNotifier {
     }
   }
 
+  // Change password
   Future<void> chnagePassword(Map<String, dynamic> passwordData) async {
     try {
       final passwordD = {
@@ -153,6 +176,7 @@ class User with ChangeNotifier {
     }
   }
 
+  // Call reset password
   Future<void> forgotPassword(String email) async {
     print(email);
     try {
@@ -162,6 +186,7 @@ class User with ChangeNotifier {
     }
   }
 
+  // Try auto login if token is valid
   Future<bool> tryAutoLogin() async {
     if (!_userData.isEmpty) {
       return true;
@@ -181,9 +206,13 @@ class User with ChangeNotifier {
     _refreshToken = extractedTokenData['refresh'];
     _expiryDate = Jwt.getExpiryDate(_token ?? "");
     notifyListeners();
+
+    // Subscribe users to cloud messaging
+    await subscribeToChannel();
     return true;
   }
 
+  // Logout user
   Future<void> logout() async {
     _token = null;
     _userData = {};
@@ -192,5 +221,9 @@ class User with ChangeNotifier {
     prefs.remove('userData');
     prefs.remove('tokenData');
     prefs.remove('cartId');
+    await FirebaseMessaging.instance
+        .unsubscribeFromTopic('order-kitchen-staff');
+    await FirebaseMessaging.instance.unsubscribeFromTopic('order-customer');
+    await FirebaseMessaging.instance.unsubscribeFromTopic('order-waiter');
   }
 }

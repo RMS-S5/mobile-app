@@ -4,6 +4,7 @@ import '../apiConn.dart' show APIConn;
 class UserAPI {
   static final _conn = APIConn();
 
+  // User login
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final data = {'email': email, 'password': password};
@@ -14,6 +15,7 @@ class UserAPI {
     }
   }
 
+  // Customer register
   Future<Map<String, dynamic>> customerRegister(
       Map<String, dynamic> data) async {
     try {
@@ -24,6 +26,7 @@ class UserAPI {
     }
   }
 
+  // Update profile details -> Customer, Staff
   Future<Map<String, dynamic>> updateProfile(Map<String, dynamic> data,
       {String? token}) async {
     try {
@@ -35,6 +38,7 @@ class UserAPI {
     }
   }
 
+  // Change password -> Customer, Staff
   Future<Map<String, dynamic>> changePassword(
       String userId, Map<String, dynamic> data,
       {String? token}) async {
@@ -47,6 +51,7 @@ class UserAPI {
     }
   }
 
+  // Reset password
   Future<Map<String, dynamic>> resetPassword(String email) async {
     try {
       var response = await _conn

@@ -7,6 +7,7 @@ import 'dart:async';
 
 import '../welcome-screen.dart';
 import '../../providers/user.dart';
+import '../../providers/notifications.dart';
 import '../../models/http_exception.dart';
 import '../../config/constants.dart';
 import '../../widgets/simple_error_dialog.dart';
@@ -58,6 +59,7 @@ class _AuthCardState extends State<AuthCard> {
           _loginData['email'] ?? "",
           _loginData['password'] ?? "",
         );
+        Provider.of<Notifications>(context, listen: false).clearNotifications();
         Navigator.of(context).pushReplacementNamed("/");
       } else {
         // Sign user up
